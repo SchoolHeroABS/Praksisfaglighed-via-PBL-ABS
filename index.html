@@ -977,7 +977,7 @@
         </div>
 
         <label class="field">
-          <textarea rows="25" <label class="field">
+          <textarea id="aiPromptText" rows="25">
 
 Du er didaktisk ekspert.
 
@@ -3046,6 +3046,23 @@ Baseret på disse informationer, vil jeg gerne have dig til at:
     // Initialisering ved sideindlæsning
     renderDesigner();
     renderKnowledge();
+    
+    // Håndtering af "Kopiér Prompt"-knappen
+document.addEventListener('click', (e) => {
+  const copyBtn = e.target.closest('[data-action="copy-prompt"]');
+  if (!copyBtn) return;
+
+  const textarea = document.getElementById('aiPromptText');
+  if (textarea) {
+    navigator.clipboard.writeText(textarea.value).then(() => {
+      // Bruger din eksisterende toast-funktion til at vise succes
+      showToast('Prompt kopieret til udklipsholderen! 📋', false);
+    }).catch(err => {
+      showToast('Fejl: Kunne ikke kopiere prompten', true);
+      console.error('Kopieringsfejl:', err);
+    });
+  }
+});
   </script>
 </body>
 </html>
