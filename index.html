@@ -3064,36 +3064,42 @@ document.addEventListener('click', (e) => {
     });
   }
 });
-// Håndtering af "Ryd forløb"-knappen
+// Håndtering af "Ryd forløb"-knappen (Fane 1: PBL Designer)
 document.addEventListener('click', (e) => {
   const clearBtn = e.target.closest('#btn-clear-pbl');
   if (!clearBtn) return;
 
   if (confirm('Er du sikker på, at du vil rydde hele forløbet og starte forfra?')) {
+    
+    // 1. Nulstil inputs i toolbaren
+    const dayCountInput = document.getElementById('dayCount');
+    if (dayCountInput) dayCountInput.value = 5; // Sætter standarden tilbage til 5 dage
+    
+    const teachersInput = document.getElementById('teachers');
+    if (teachersInput) teachersInput.value = '';
 
-    // Kigger efter den nærmeste store container, som knappen ligger i 
-    // (Ret gerne 'article', 'section' eller '.tab-content' til det, der omkranser din fane)
-    const pblContainer = clearBtn.closest('div') || document; 
+    // 2. Nulstil titel og beskrivelse
+    const projectTitle = document.getElementById('projectTitle');
+    if (projectTitle) projectTitle.innerText = 'Mit PBL-forløb';
+    
+    const projectSummary = document.getElementById('projectSummary');
+    if (projectSummary) projectSummary.innerText = 'Klik på Forløbsbeskrivelse for at tilføje mål og problemstilling.';
 
-    // 1. Tømmer alle almindelige tekstfelter
-    pblContainer.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(input => {
-      input.value = '';
-    });
-
-    // 2. Nulstiller dropdowns
-    pblContainer.querySelectorAll('select').forEach(select => {
-      select.selectedIndex = 0;
-    });
-
-    // 3. Fjerner alt indhold i f.eks. lister eller dynamiske faser 
-    // VIGTIGT: Hvis du har en bestemt boks, hvor nye faser dukker op, så skriv dens ID her:
-    const faseContainer = document.getElementById('INDSÆT_ID_PÅ_DIN_FASE_CONTAINER_HER');
-    if (faseContainer) {
-      faseContainer.innerHTML = '';
+    // 3. Tøm hele tidslinjen for indhold (faserne)
+    const daysContainer = document.getElementById('days');
+    if (daysContainer) {
+      daysContainer.innerHTML = ''; 
     }
 
+    // 4. Genbyg de tomme dage ved at "klikke" på Opdater tidslinje-knappen via koden
+    const updateDaysBtn = document.querySelector('[data-action="set-days"]');
+    if (updateDaysBtn) {
+      updateDaysBtn.click();
+    }
+
+    // Giv brugeren besked
     if (typeof showToast === 'function') {
-      showToast('PBL-forløbet er ryddet 🧹', false);
+      showToast('PBL-forløbet er ryddet og klar til en frisk start 🧹', false);
     }
   }
 });
