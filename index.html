@@ -3103,6 +3103,27 @@ document.addEventListener('click', (e) => {
     }
   }
 });
+    document.getElementById('btn-clear-pbl').addEventListener('click', () => {
+  askConfirm(
+    'Ryd hele forløbet?',
+    'Er du sikker på, at du vil starte forfra? Alt indhold, faser og beskrivelser bliver slettet. Dette kan ikke fortrydes.',
+    'Ja, ryd alt',
+    () => {
+      // 1. Nulstil hukommelsen fuldstændigt
+      data = blankPlan(); 
+      
+      // 2. Gem den tomme tilstand, så det gamle ikke popper op igen
+      persist();          
+      
+      // 3. Tegn den tomme tavle op på skærmen
+      renderDesigner();   
+      
+      // 4. Vis en lille succes-besked
+      showToast('Forløbet er blevet ryddet');
+    },
+    true // Dette gør bekræft-knappen rød (danger)
+  );
+});
   </script>
 </body>
 </html>
