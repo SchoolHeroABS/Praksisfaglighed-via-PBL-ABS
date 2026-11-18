@@ -1,0 +1,2919 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABSALONSKOLEN - HOLBÆK – Praksisfaglighed via PBL</title>
+  <!-- Google Fonts til graffiti-inspireret header -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik+Spray+Paint&family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #243247;
+      background: #f5f7fb;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background: #f5f7fb;
+      color: #243247;
+    }
+
+    /* Header med graffiti-inspireret typografi */
+    header {
+      background: linear-gradient(135deg, #ffffff 0%, #eef4fc 60%, #e4eefb 100%);
+      padding: 22px 28px;
+      border-bottom: 3px solid #305e9c;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: "";
+      position: absolute;
+      top: -30px;
+      left: -20px;
+      width: 280px;
+      height: 130px;
+      background: radial-gradient(circle, rgba(48, 94, 156, 0.13) 0%, rgba(223, 153, 44, 0.09) 52%, transparent 75%);
+      pointer-events: none;
+    }
+    .brand-wrap {
+      position: relative;
+      z-index: 1;
+    }
+    h1.graffiti-title {
+      margin: 0;
+      font-family: 'Rubik Spray Paint', 'Sedgwick Ave Display', cursive, sans-serif;
+      font-size: clamp(25px, 3.5vw, 39px);
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      line-height: 1.1;
+      background: linear-gradient(95deg, #1b3b6f 0%, #305e9c 55%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(2px 3px 0px rgba(27, 59, 111, 0.15));
+      transform: rotate(-0.6deg);
+      display: inline-block;
+    }
+    .graffiti-subtitle {
+      margin-top: 6px;
+      font-family: 'Permanent Marker', 'Sedgwick Ave Display', cursive, sans-serif;
+      font-size: clamp(16px, 2vw, 21px);
+      color: #2f5285;
+      letter-spacing: 0.8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .graffiti-subtitle::before {
+      content: "✦";
+      color: #df992c;
+      font-size: 18px;
+    }
+
+    h2 {
+      font-size: 17px;
+      margin-top: 0;
+    }
+    button, input, textarea, select {
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: #e7edf6;
+      color: #243247;
+      font-weight: 500;
+      transition: filter 0.15s ease, transform 0.1s ease, background-color 0.15s ease;
+    }
+    button.primary {
+      background: #305e9c;
+      color: #ffffff;
+    }
+    button.danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    button:hover:not(:disabled) {
+      filter: brightness(0.96);
+    }
+    button:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    main {
+      max-width: 1500px;
+      margin: auto;
+      padding: 24px;
+    }
+    .toolbar, .panel {
+      background: #ffffff;
+      border: 1px solid #e0e6ef;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(36, 50, 71, 0.03);
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .toolbar input[type=number] {
+      width: 72px;
+      padding: 8px 10px;
+      border: 1px solid #cdd8e5;
+      border-radius: 9px;
+    }
+    .toolbar input:not([type]), .toolbar input[type=text] {
+      padding: 8px 10px;
+      border: 1px solid #cdd8e5;
+      border-radius: 9px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 20px;
+    }
+    .library {
+      position: sticky;
+      top: 12px;
+      align-self: start;
+      max-height: calc(100vh - 24px);
+      overflow-y: auto;
+    }
+
+    /* Procesbibliotek & farvekoder */
+    .process {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin: 7px 0;
+      background: #eef3f9;
+      border-left: 6px solid transparent;
+      font-weight: 650;
+    }
+    .process small {
+      display: block;
+      color: inherit;
+      opacity: 0.78;
+      font-weight: 500;
+      font-size: 12px;
+    }
+    .process[data-category="Opstart"], .chip[data-category="Opstart"] {
+      background: #dcecff;
+      border-color: #377dc5;
+      color: #163e70;
+    }
+    .process[data-category="Undersøgelse"], .chip[data-category="Undersøgelse"] {
+      background: #eee1fa;
+      border-color: #9660c5;
+      color: #542b7b;
+    }
+    .process[data-category="Udvikling"], .chip[data-category="Udvikling"] {
+      background: #fff0d1;
+      border-color: #df992c;
+      color: #754700;
+    }
+    .process[data-category="Afslutning"], .chip[data-category="Afslutning"] {
+      background: #d9f3e5;
+      border-color: #31946b;
+      color: #165d43;
+    }
+
+    .legend {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin: 10px 0 16px;
+    }
+    .legend span {
+      padding: 6px 11px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .legend .opstart { background: #dcecff; color: #163e70; }
+    .legend .undersogelse { background: #eee1fa; color: #542b7b; }
+    .legend .udvikling { background: #fff0d1; color: #754700; }
+    .legend .afslutning { background: #d9f3e5; color: #165d43; }
+
+    /* Tidslinje & dagkolonner */
+    .timeline {
+      overflow-x: auto;
+      padding: 18px 6px 16px;
+    }
+    .days {
+      display: flex;
+      gap: 14px;
+      min-width: max-content;
+      align-items: stretch;
+    }
+    .day {
+      width: 205px;
+      min-height: 295px;
+      background: #f7f9fc;
+      border: 2px dashed #c8d4e2;
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .day.dragover {
+      background: #e0efff;
+      border-color: #346fb0;
+    }
+    .day h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+    .chip {
+      background: #d5e2f0;
+      border-left: 5px solid #4879ae;
+      border-radius: 9px;
+      padding: 10px;
+      text-align: left;
+      width: 100%;
+      font-size: 13px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    .chip small {
+      display: block;
+      color: #526278;
+      margin-top: 4px;
+      font-size: 11.5px;
+    }
+    .day-add {
+      margin-top: auto;
+      background: #ffffff;
+      border: 1px solid #d7e1ec;
+      font-size: 13px;
+    }
+    .hint {
+      font-size: 13px;
+      color: #68788b;
+    }
+
+    /* Formularer & Modaler */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 10px 0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      border: 1px solid #cdd8e5;
+      border-radius: 9px;
+      padding: 10px;
+      background: #ffffff;
+      font-weight: 400;
+    }
+    .field textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+    .formgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .modalback {
+      position: fixed;
+      inset: 0;
+      background: rgba(23, 38, 56, 0.55);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
+    .modalback.show {
+      display: flex;
+    }
+    .modal {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 24px;
+      width: min(660px, 100%);
+      max-height: 90vh;
+      overflow: auto;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+    }
+    .modalfooter {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .topbuttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+    #status {
+      font-size: 13px;
+      color: #58738b;
+      margin-left: auto;
+    }
+
+    /* Toast notifikation i stedet for alert() */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e293b;
+      color: #ffffff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .toast.error {
+      background: #991b1b;
+    }
+
+    /* Faner */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .tabs button {
+      font-weight: 600;
+      padding: 11px 16px;
+    }
+    .tabs button.active {
+      background: #305e9c;
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(48, 94, 156, 0.22);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* === PROJEKT POKER & VIDENSBANK === */
+    .kb-header-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f3f7fd 100%);
+      border: 1px solid #d5e1f0;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+    .kb-subnav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 8px 0 4px;
+    }
+    .kb-subnav button {
+      background: #eef3f9;
+      font-weight: 600;
+      font-size: 13.5px;
+    }
+    .kb-subnav button.active {
+      background: #1b3b6f;
+      color: #ffffff;
+    }
+    .kb-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .kb-search-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .kb-search-row input {
+      flex: 1;
+      min-width: 240px;
+      padding: 10px 14px;
+      border: 1px solid #cdd8e5;
+      border-radius: 10px;
+      background: #ffffff;
+    }
+    .kb-count {
+      font-size: 13px;
+      color: #526278;
+      font-weight: 600;
+    }
+    .subject-filters {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+    .subject-filters button {
+      padding: 7px 12px;
+      font-size: 12.5px;
+      border-radius: 20px;
+      background: #eef3f9;
+      color: #243247;
+      border: 1px solid #dce5f2;
+    }
+    .subject-filters button.active {
+      background: #305e9c;
+      color: #ffffff;
+      border-color: #305e9c;
+    }
+    .poker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 18px;
+    }
+    .poker-card {
+      background: #ffffff;
+      border: 1px solid #dce3ec;
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 3px 10px rgba(36, 50, 71, 0.04);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .poker-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(36, 50, 71, 0.08);
+    }
+    .poker-card.featured {
+      border: 2px solid #305e9c;
+      background: linear-gradient(180deg, #f8fbff 0%, #ffffff 35%);
+    }
+    .source-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #e7edf6;
+      color: #2f5285;
+      display: inline-block;
+    }
+    .source-tag.model {
+      background: #305e9c;
+      color: #ffffff;
+    }
+    .poker-card h3 {
+      margin: 6px 0 0;
+      font-size: 17px;
+      color: #163e70;
+      line-height: 1.3;
+    }
+    .subject-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .subject-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: 8px;
+      background: #f0f4fa;
+      color: #305e9c;
+    }
+    .product-box {
+      background: #f7f9fc;
+      border-left: 4px solid #305e9c;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+    .poker-desc {
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #334155;
+    }
+    .poker-activities {
+      margin: 4px 0 0;
+      padding-left: 18px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #475569;
+    }
+    .poker-activities li {
+      margin-bottom: 4px;
+    }
+    .klimazirkus-triad {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .kz-pill {
+      padding: 8px 10px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      line-height: 1.4;
+    }
+    .kz-pill.krop {
+      background: #fff4d6;
+      color: #6b4200;
+      border-left: 4px solid #df992c;
+    }
+    .kz-pill.teori {
+      background: #f3e8ff;
+      color: #542b7b;
+      border-left: 4px solid #9660c5;
+    }
+    .kz-pill.handling {
+      background: #e0efff;
+      color: #163e70;
+      border-left: 4px solid #377dc5;
+    }
+    .poker-actions {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid #eef2f6;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .poker-actions button {
+      flex: 1;
+      min-width: 145px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 12px;
+    }
+    .abc-details-box {
+      background: #f8fafc;
+      border: 1px solid #dce3ec;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .abc-details-box summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #1b3b6f;
+    }
+    .didactic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .didactic-card {
+      background: #ffffff;
+      border: 1px solid #dce3ec;
+      border-radius: 16px;
+      padding: 18px;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    .didactic-card h3 {
+      margin-top: 0;
+      color: #163e70;
+      font-size: 16px;
+    }
+    .verb-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
+    }
+    .verb-tag {
+      background: #eef3f9;
+      color: #1e3a8a;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* === AI CHATBOT === */
+    .chat-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 18px;
+    }
+    .chat-area {
+      min-height: 550px;
+      display: flex;
+      flex-direction: column;
+    }
+    .messages {
+      flex: 1;
+      min-height: 330px;
+      max-height: 58vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px 4px;
+    }
+    .bubble {
+      max-width: 90%;
+      padding: 13px 16px;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      line-height: 1.55;
+      font-size: 14.5px;
+    }
+    .bubble.user {
+      align-self: flex-end;
+      background: #dcecff;
+      color: #163e70;
+      border-bottom-right-radius: 4px;
+    }
+    .bubble.assistant {
+      align-self: flex-start;
+      background: #f0f3f8;
+      color: #243247;
+      border-bottom-left-radius: 4px;
+    }
+    .chat-entry {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      margin-top: 8px;
+    }
+    .chat-entry textarea {
+      flex: 1;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid #cdd8e5;
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .guide {
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    .guide h3 {
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+    .guide p {
+      margin-top: 5px;
+    }
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .suggestions button {
+      font-size: 13px;
+      background: #eef3f9;
+      border: 1px solid #d5e1f0;
+    }
+    .chat-note {
+      font-size: 12px;
+      color: #65768b;
+    }
+    .import-action {
+      background: #d9f3e5;
+      color: #165d43;
+      font-weight: 700;
+      margin: 2px 0 8px;
+      align-self: flex-start;
+      border: 1px solid #31946b;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(49, 148, 107, 0.16);
+    }
+    .import-action:hover {
+      background: #c4ebd6;
+    }
+    .connection-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eef2f6;
+    }
+    .conn-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 650;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #d9f3e5;
+      color: #165d43;
+    }
+
+    @media (max-width: 900px) {
+      .chat-layout {
+        grid-template-columns: 1fr;
+      }
+      .guide {
+        order: 2;
+      }
+    }
+    @media (max-width: 850px) {
+      header {
+        padding: 18px 20px;
+      }
+      main {
+        padding: 16px;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .library {
+        position: static;
+        max-height: none;
+      }
+      .formgrid {
+        grid-template-columns: 1fr;
+      }
+      #status {
+        margin-left: 0;
+      }
+    }
+    @media (max-width: 600px) {
+      .poker-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media print {
+      header::before, .toolbar, .library, .day-add, .hint, .topbuttons, .tabs, #knowledgeView, #chatView, .toast {
+        display: none !important;
+      }
+      header {
+        background: none;
+        border-bottom: 2px solid #243247;
+        padding: 10px 0;
+      }
+      h1.graffiti-title {
+        background: none;
+        -webkit-text-fill-color: #1b3b6f;
+        color: #1b3b6f;
+        filter: none;
+        transform: none;
+      }
+      #designerView {
+        display: block !important;
+      }
+      main {
+        padding: 0;
+      }
+      .layout {
+        display: block;
+      }
+      .panel {
+        border: 0;
+        box-shadow: none;
+      }
+      .timeline {
+        overflow: visible;
+      }
+      .days {
+        flex-wrap: wrap;
+        min-width: 0;
+      }
+      .day {
+        break-inside: avoid;
+        border: 1px solid #ccc;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand-wrap">
+      <h1 class="graffiti-title">ABSALONSKOLEN - HOLBÆK</h1>
+      <div class="graffiti-subtitle">Praksisfaglighed via PBL.</div>
+    </div>
+    <div id="designerTopActions" class="topbuttons">
+      <button type="button" data-action="save-file">Gem forløb</button>
+      <button type="button" data-action="trigger-import">Åbn forløb</button>
+      <button type="button" class="primary" data-action="print-pdf">Gem som PDF</button>
+      <input hidden id="importFile" type="file" accept="application/json,.json">
+    </div>
+  </header>
+
+  <main>
+    <nav class="tabs" aria-label="Vælg værktøj">
+      <button type="button" id="tabDesigner" class="active" data-action="switch-tab" data-tab="designer">▦ PBL Designer</button>
+      <button type="button" id="tabKnowledge" data-action="switch-tab" data-tab="knowledge">🃏 Projekt Poker &amp; Vidensbank</button>
+      <button type="button" id="tabChat" data-action="switch-tab" data-tab="chat">✦ AI – Praksisfaglighed</button>
+    </nav>
+
+    <!-- FANE 1: PBL DESIGNER -->
+    <div id="designerView">
+      <section class="toolbar">
+        <label>Antal dage <input id="dayCount" type="number" min="1" max="60" value="5"></label>
+        <button type="button" data-action="set-days">Opdater tidslinje</button>
+        <button type="button" data-action="open-overview">Forløbsbeskrivelse</button>
+        <label>Lærere <input id="teachers" type="text" placeholder="Anna, Bo, Clara" style="width:230px"></label>
+        <span id="status">Klar</span>
+      </section>
+
+      <div class="layout">
+        <aside class="panel library">
+          <h2>Procesbibliotek</h2>
+          <p class="hint">Træk en proces til en dag, eller klik på den og vælg dag.</p>
+          <div id="library"></div>
+          <button type="button" data-action="new-custom" style="width:100%; margin-top:8px;">+ Egen proces</button>
+        </aside>
+
+        <section class="panel">
+          <h2 id="projectTitle">Mit PBL-forløb</h2>
+          <p id="projectSummary" class="hint">Klik på Forløbsbeskrivelse for at tilføje mål og problemstilling.</p>
+          <div class="legend">
+            <span class="opstart">● Opstart</span>
+            <span class="undersogelse">● Undersøgelse</span>
+            <span class="udvikling">● Udvikling</span>
+            <span class="afslutning">● Afslutning</span>
+          </div>
+          <div class="timeline">
+            <div id="days" class="days"></div>
+          </div>
+          <p class="hint">Klik på en proces for at redigere den. Processer kan flyttes mellem dage ved at trække dem.</p>
+        </section>
+      </div>
+    </div>
+
+    <!-- FANE 2: PROJEKT POKER & VIDENSBANK -->
+    <div id="knowledgeView" class="hidden">
+      <section class="kb-header-card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+          <div>
+            <h2 style="margin:0 0 4px; font-size:20px; color:#163e70;">🃏 Projekt Poker &amp; Praksisfaglig Vidensbank</h2>
+            <p class="hint" style="margin:0;">Inspirationsdatabase fra Klimazirkus (<i>Projekt Poker</i>) og <i>praksisfaglighed.dk</i> – alle 25 praksisfaglige forløb samlet ét sted.</p>
+          </div>
+          <div class="kb-subnav" role="tablist">
+            <button type="button" id="kbSubCards" class="active" data-action="switch-kb-sub" data-sub="cards">🃏 Alle 25 forløbskort</button>
+            <button type="button" id="kbSubDidactics" data-action="switch-kb-sub" data-sub="didactics">🧭 Didaktisk Opslagsværk (Klimazirkus, ABC &amp; EVA)</button>
+          </div>
+        </div>
+
+        <div id="kbFilterControls" class="kb-controls">
+          <div class="kb-search-row">
+            <input id="kbSearch" type="search" placeholder="Søg på titel, fag, produkt, aktivitet (fx fuglekasse, podcast, byvandring, børnehaveklasse, bank)…">
+            <span id="kbResultCount" class="kb-count">Viser 25 af 25 forløb</span>
+          </div>
+          <div id="kbSubjectFilters" class="subject-filters"></div>
+        </div>
+      </section>
+
+      <section id="kbCardsSection">
+        <div id="pokerGrid" class="poker-grid"></div>
+      </section>
+
+      <section id="kbDidacticsSection" class="hidden">
+        <div id="didacticsContainer"></div>
+      </section>
+    </div>
+
+    <!-- FANE 3: AI – PRAKSISFAGLIGHED -->
+    <div id="chatView" class="hidden">
+      <div class="chat-layout">
+        <section class="panel chat-area">
+          <h2>✦ Chatbot for praksisfaglighed via PBL</h2>
+          <p class="hint">Din didaktiske sparringspartner – fra idé til gennemførligt undervisningsforløb.</p>
+
+          <div class="connection-bar">
+            <span id="connStatus" class="conn-badge">● Klar til pædagogisk sparring (Gemini AI)</span>
+            <button type="button" data-action="reset-chat">Ny samtale</button>
+          </div>
+
+          <div class="suggestions">
+            <button type="button" data-action="prompt-example" data-prompt="Lav et praksisfagligt matematikforløb udenfor skolegården med måling, bevægelse og et konkret produkt til en modtager.">Matematik udenfor</button>
+            <button type="button" data-action="prompt-example" data-prompt="Giv mig 5 konkrete idéer til autentiske produkter og 3 realistiske modtagere i et tværfagligt PBL-forløb.">Produkter og modtagere</button>
+            <button type="button" data-action="prompt-example" data-prompt="Hjælp mig med at ABC-differentiere et praksisfagligt undervisningsforløb på niveau A, B og C med tydelige handlingsverber.">ABC-differentiering</button>
+            <button type="button" data-action="prompt-example" data-prompt="Inspirer mig ud fra Projekt Poker-kortene til et tværfagligt forløb, og lav en konkret plan til PBL Designer.">Inspirer mig fra Projekt Poker</button>
+          </div>
+
+          <div id="messages" class="messages" aria-live="polite">
+            <div class="bubble assistant">Hej! Fortæl mig klassetrin, fag, tid og gerne et tema. Jeg kender hele idékataloget fra Projekt Poker (24 forløbskort) samt mønsterforløbet "Design en matematikaktivitet til en yngre klasse" og ABC-differentiering – og du kan overføre færdige forløb direkte til PBL Designer.</div>
+          </div>
+
+          <div id="thinking" class="chat-note" aria-live="polite" style="min-height:18px; margin-top:4px; font-weight:500;"></div>
+
+          <div class="chat-entry">
+            <textarea id="chatInput" placeholder="Beskriv din idé eller undervisningsramme… (Tryk Enter for at sende)" aria-label="Skriv til chatbotten"></textarea>
+            <button type="button" id="sendBtn" class="primary" data-action="send-chat">Send ↗</button>
+          </div>
+          <p class="chat-note">Undlad navne og personlige oplysninger om elever. AI-svar skal fagligt vurderes før brug.</p>
+        </section>
+
+        <aside class="panel guide">
+          <h2>Chatbot for praksisfaglighed via PBL</h2>
+          <p>Jeg er din hurtige, praksisnære hjælper, når du vil omsætte gode intentioner til konkret undervisning, der giver mening for eleverne.</p>
+          <h3>Sådan bruger du mig bedst</h3>
+          <p><b>1. Giv mig din ramme</b><br>Klassetrin, fag, tid (fx 3 lektioner eller 2 uger) og tema.</p>
+          <p><b>2. Fortæl hvad eleverne skal kunne og gøre</b><br>Faglige mål og praktisk aktivitet: produkt, handling, løsning, undersøgelse eller formidling.</p>
+          <p><b>3. Bed om et konkret output</b><br>Fx lektionsplan med ABC-differentiering, elevopgaver, materialeliste og evaluering – eller inspiration fra konkrete Projekt Poker-kort.</p>
+          <p><b>Har du brug for mere hjælp, så find Emil.</b></p>
+          <hr style="border:0; border-top:1px solid #e0e6ef; margin:14px 0;">
+          <p class="chat-note">Når et forløb er genereret, dukker knappen <b>↳ Overfør forløb til PBL Designer</b> op lige under svaret.</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <!-- GENBRUGELIG MODAL -->
+  <div id="modalback" class="modalback" data-action="backdrop-close">
+    <div class="modal">
+      <h2 id="modalTitle"></h2>
+      <div id="modalContent"></div>
+      <div class="modalfooter">
+        <button type="button" data-action="close-modal">Annuller</button>
+        <div id="modalActions"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST BESKED -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // =========================================================
+    // 1. SIKKER LAGRING (SANDBOXED IFRAME SAFE) & HJÆLPERE
+    // =========================================================
+    const memoryStorage = {};
+
+    function safeGetStorage(key) {
+      try {
+        const val = window.localStorage.getItem(key);
+        return val !== null ? val : (memoryStorage[key] || null);
+      } catch (e) {
+        return memoryStorage[key] || null;
+      }
+    }
+
+    function safeSetStorage(key, value) {
+      memoryStorage[key] = value;
+      try {
+        window.localStorage.setItem(key, value);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    const el = id => document.getElementById(id);
+    const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[c]));
+
+    let toastTimer = null;
+    function showToast(msg, isError) {
+      const t = el('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.className = 'toast show' + (isError ? ' error' : '');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    function makeId() {
+      if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+        return crypto.randomUUID();
+      }
+      return 'id-' + Date.now() + '-' + Math.random().toString(36).slice(2, 9);
+    }
+
+    // =========================================================
+    // 2. PBL DESIGNER DATA & LOGIK
+    // =========================================================
+    const catalog = [
+      ['Kickoff', 'Opstart'],
+      ['Drivende spørgsmål', 'Opstart'],
+      ['Fælles forståelse', 'Opstart'],
+      ['Problemformulering', 'Opstart'],
+      ['Planlægning', 'Opstart'],
+      ['Research', 'Undersøgelse'],
+      ['Kildekritik', 'Undersøgelse'],
+      ['Interview', 'Undersøgelse'],
+      ['Observation', 'Undersøgelse'],
+      ['Ekspertbesøg', 'Undersøgelse'],
+      ['Idégenerering', 'Udvikling'],
+      ['Brainstorm', 'Udvikling'],
+      ['Skitsering', 'Udvikling'],
+      ['Prototype', 'Udvikling'],
+      ['Produktion', 'Udvikling'],
+      ['Feedback', 'Udvikling'],
+      ['Test', 'Udvikling'],
+      ['Revision', 'Udvikling'],
+      ['Forberedelse af fremlæggelse', 'Afslutning'],
+      ['Præsentation', 'Afslutning'],
+      ['Udstilling', 'Afslutning'],
+      ['Evaluering', 'Afslutning'],
+      ['Refleksion', 'Afslutning']
+    ];
+
+    const blankPlan = () => ({
+      days: 5,
+      title: 'Mit PBL-forløb',
+      subject: '',
+      question: '',
+      goals: '',
+      product: '',
+      evaluation: '',
+      teachers: '',
+      items: []
+    });
+
+    let data = blankPlan();
+    try {
+      const savedRaw = safeGetStorage('pbl-designer-v1');
+      if (savedRaw) {
+        const parsed = JSON.parse(savedRaw);
+        if (parsed && Number.isInteger(parsed.days) && Array.isArray(parsed.items)) {
+          data = { ...blankPlan(), ...parsed };
+        }
+      }
+    } catch (e) {
+      data = blankPlan();
+    }
+
+    let activeItemId = null;
+    let confirmCallback = null;
+
+    function persist() {
+      const ok = safeSetStorage('pbl-designer-v1', JSON.stringify(data));
+      const statusEl = el('status');
+      if (statusEl) {
+        statusEl.textContent = ok ? 'Gemt lokalt ✓' : 'Gemt i session ✓';
+      }
+    }
+
+    function makeItem(name, category, day) {
+      return {
+        id: makeId(),
+        name: name || 'Proces',
+        category: ['Opstart', 'Undersøgelse', 'Udvikling', 'Afslutning'].includes(category) ? category : 'Udvikling',
+        day: Math.max(1, Number(day) || 1),
+        description: '',
+        goals: '',
+        materials: '',
+        time: '',
+        teachers: '',
+        notes: ''
+      };
+    }
+
+    function renderDesigner() {
+      el('dayCount').value = data.days;
+      el('teachers').value = data.teachers || '';
+      el('projectTitle').textContent = data.title || 'Mit PBL-forløb';
+      el('projectSummary').textContent = [data.subject, data.question].filter(Boolean).join(' · ') || 'Klik på Forløbsbeskrivelse for at tilføje mål og problemstilling.';
+
+      el('library').innerHTML = catalog.map(([name, category], i) => `
+        <button type="button" class="process" data-category="${esc(category)}" draggable="true" data-action="open-add-process" data-index="${i}">
+          ${esc(name)}
+          <small>${esc(category)}</small>
+        </button>
+      `).join('');
+
+      document.querySelectorAll('.process').forEach(btn => {
+        btn.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/catalog', btn.dataset.index);
+        });
+      });
+
+      el('days').innerHTML = Array.from({ length: data.days }, (_, i) => {
+        const dayNum = i + 1;
+        const dayItems = data.items.filter(x => x.day === dayNum);
+        return `
+          <div class="day" data-day="${dayNum}">
+            <h3>Dag ${dayNum}</h3>
+            ${dayItems.map(x => `
+              <button type="button" draggable="true" class="chip" data-action="edit-process" data-id="${esc(x.id)}" data-category="${esc(x.category)}">
+                <b>${esc(x.name)}</b>
+                <small>${esc(x.time || '')}${x.teachers ? ' · ' + esc(x.teachers) : ''}</small>
+              </button>
+            `).join('')}
+            <button type="button" class="day-add" data-action="choose-process" data-day="${dayNum}">+ Tilføj proces</button>
+          </div>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.day').forEach(dayEl => {
+        dayEl.addEventListener('dragover', e => {
+          e.preventDefault();
+          dayEl.classList.add('dragover');
+        });
+        dayEl.addEventListener('dragleave', () => {
+          dayEl.classList.remove('dragover');
+        });
+        dayEl.addEventListener('drop', e => {
+          e.preventDefault();
+          dayEl.classList.remove('dragover');
+          const day = Number(dayEl.dataset.day);
+          const itemId = e.dataTransfer.getData('text/item');
+          const catIdx = e.dataTransfer.getData('text/catalog');
+          if (itemId) {
+            const existing = data.items.find(x => x.id === itemId);
+            if (existing) existing.day = day;
+          } else if (catIdx !== '') {
+            const entry = catalog[Number(catIdx)];
+            if (entry) data.items.push(makeItem(entry[0], entry[1], day));
+          }
+          persist();
+          renderDesigner();
+        });
+      });
+
+      document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/item', chip.dataset.id);
+        });
+      });
+    }
+
+    function showModal(title, contentHtml, actionsHtml) {
+      el('modalTitle').textContent = title;
+      el('modalContent').innerHTML = contentHtml;
+      el('modalActions').innerHTML = actionsHtml;
+      el('modalback').classList.add('show');
+    }
+
+    function closeModal() {
+      el('modalback').classList.remove('show');
+    }
+
+    function askConfirm(title, message, confirmLabel, onConfirm, isDanger) {
+      confirmCallback = onConfirm;
+      showModal(
+        title,
+        `<p style="line-height:1.5; margin:8px 0;">${esc(message)}</p>`,
+        `<button type="button" class="${isDanger ? 'danger' : 'primary'}" data-action="run-confirm">${esc(confirmLabel)}</button>`
+      );
+    }
+
+    function fieldHtml(id, label, value, isTextarea) {
+      return `<label class="field">${esc(label)}${isTextarea
+        ? `<textarea id="f_${esc(id)}">${esc(value)}</textarea>`
+        : `<input id="f_${esc(id)}" type="text" value="${esc(value)}">`}</label>`;
+    }
+
+    function setDays() {
+      const n = Math.max(1, Math.min(60, Number(el('dayCount').value) || 5));
+      const apply = () => {
+        data.items.forEach(x => { x.day = Math.min(x.day, n); });
+        data.days = n;
+        persist();
+        renderDesigner();
+        showToast(`Tidslinje opdateret til ${n} ${n === 1 ? 'dag' : 'dage'}`);
+      };
+      if (n < data.days && data.items.some(x => x.day > n)) {
+        askConfirm(
+          'Reducer antal dage?',
+          `Processer på dage efter dag ${n} bliver flyttet til dag ${n}. Vil du fortsætte?`,
+          'Ja, opdater tidslinje',
+          apply,
+          false
+        );
+        return;
+      }
+      apply();
+    }
+
+    function openOverview() {
+      showModal(
+        'Forløbsbeskrivelse',
+        fieldHtml('title', 'Forløbets titel', data.title, false) +
+        fieldHtml('subject', 'Fag / klassetrin', data.subject, false) +
+        fieldHtml('question', 'Drivende spørgsmål / problemstilling', data.question, true) +
+        fieldHtml('goals', 'Læringsmål', data.goals, true) +
+        fieldHtml('product', 'Slutprodukt', data.product, true) +
+        fieldHtml('evaluation', 'Evaluering', data.evaluation, true),
+        '<button type="button" class="primary" data-action="save-overview">Gem beskrivelse</button>'
+      );
+    }
+
+    function saveOverview() {
+      ['title', 'subject', 'question', 'goals', 'product', 'evaluation'].forEach(k => {
+        const input = el('f_' + k);
+        if (input) data[k] = input.value;
+      });
+      persist();
+      closeModal();
+      renderDesigner();
+      showToast('Forløbsbeskrivelse gemt');
+    }
+
+    function openAddProcessModal(catalogIndex) {
+      const entry = catalog[catalogIndex];
+      if (!entry) return;
+      const [name] = entry;
+      showModal(
+        'Placér ' + name,
+        `<label class="field">Vælg dag<select id="selectedDay">${Array.from({ length: data.days }, (_, i) => `<option value="${i + 1}">Dag ${i + 1}</option>`).join('')}</select></label>`,
+        `<button type="button" class="primary" data-action="save-add-process" data-index="${catalogIndex}">Tilføj</button>`
+      );
+    }
+
+    function saveAddProcess(catalogIndex) {
+      const entry = catalog[catalogIndex];
+      if (!entry) return;
+      const day = Number(el('selectedDay').value) || 1;
+      const item = makeItem(entry[0], entry[1], day);
+      data.items.push(item);
+      persist();
+      closeModal();
+      renderDesigner();
+      openEditProcessModal(item.id);
+    }
+
+    function openChooseProcessModal(day) {
+      showModal(
+        'Vælg proces til dag ' + day,
+        `<label class="field">Proces<select id="selectedProcess">${catalog.map(([n, c], i) => `<option value="${i}">${esc(n)} (${esc(c)})</option>`).join('')}</select></label>`,
+        `<button type="button" class="primary" data-action="save-choose-process" data-day="${day}">Tilføj</button>`
+      );
+    }
+
+    function saveChooseProcess(day) {
+      const idx = Number(el('selectedProcess').value) || 0;
+      const entry = catalog[idx];
+      if (entry) {
+        data.items.push(makeItem(entry[0], entry[1], day));
+        persist();
+      }
+      closeModal();
+      renderDesigner();
+    }
+
+    function newCustomProcess() {
+      const item = makeItem('Ny proces', 'Udvikling', 1);
+      data.items.push(item);
+      persist();
+      renderDesigner();
+      openEditProcessModal(item.id);
+    }
+
+    function openEditProcessModal(id) {
+      activeItemId = id;
+      const x = data.items.find(i => i.id === id);
+      if (!x) return;
+      showModal(
+        'Rediger proces',
+        `<div class="formgrid">${fieldHtml('name', 'Procesnavn', x.name, false)}<label class="field">Dag<select id="f_day">${Array.from({ length: data.days }, (_, i) => `<option value="${i + 1}" ${x.day === i + 1 ? 'selected' : ''}>Dag ${i + 1}</option>`).join('')}</select></label></div>` +
+        `<label class="field">Procesfase / farve<select id="f_category">${['Opstart', 'Undersøgelse', 'Udvikling', 'Afslutning'].map(c => `<option value="${c}" ${x.category === c ? 'selected' : ''}>${c}</option>`).join('')}</select></label>` +
+        fieldHtml('description', 'Beskrivelse af processen', x.description, true) +
+        fieldHtml('goals', 'Mål for processen', x.goals, true) +
+        `<div class="formgrid">${fieldHtml('time', 'Tid / lektioner (fx 9.00–10.30)', x.time, false)}${fieldHtml('teachers', 'Lærere på i timerne', x.teachers, false)}</div>` +
+        fieldHtml('materials', 'Materialer', x.materials, true) +
+        fieldHtml('notes', 'Noter', x.notes, true) +
+        `<p class="hint">Lærerteam: ${esc(data.teachers || 'Tilføj lærere i toppen af siden')}</p>`,
+        `<button type="button" class="danger" data-action="delete-process">Slet proces</button> <button type="button" class="primary" data-action="save-process">Gem proces</button>`
+      );
+    }
+
+    function saveProcess() {
+      const x = data.items.find(i => i.id === activeItemId);
+      if (!x) return;
+      ['name', 'description', 'goals', 'time', 'teachers', 'materials', 'notes'].forEach(k => {
+        const input = el('f_' + k);
+        if (input) x[k] = input.value;
+      });
+      x.day = Number(el('f_day').value) || 1;
+      x.category = el('f_category').value;
+      persist();
+      closeModal();
+      renderDesigner();
+    }
+
+    function deleteProcess() {
+      askConfirm(
+        'Slet proces?',
+        'Er du sikker på, at du vil fjerne denne proces fra tidslinjen?',
+        'Slet proces',
+        () => {
+          data.items = data.items.filter(x => x.id !== activeItemId);
+          persist();
+          renderDesigner();
+          showToast('Proces slettet');
+        },
+        true
+      );
+    }
+
+    function saveFile() {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (data.title || 'PBL-forloeb').replace(/[^\wæøåÆØÅ -]/g, '') + '.json';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      showToast('Forløb eksporteret som JSON-fil');
+    }
+
+    function applyPlanToDesigner(plan) {
+      const validCats = ['Opstart', 'Undersøgelse', 'Udvikling', 'Afslutning'];
+      const days = Math.max(1, Math.min(60, Number(plan.days) || 4));
+      data = {
+        ...blankPlan(),
+        days,
+        title: plan.title || 'Nyt PBL-forløb',
+        subject: plan.subject || '',
+        question: plan.question || '',
+        goals: plan.goals || '',
+        product: plan.product || '',
+        evaluation: plan.evaluation || '',
+        teachers: data.teachers || '',
+        items: Array.isArray(plan.items) ? plan.items.map(it => ({
+          id: makeId(),
+          name: it.name || 'Proces',
+          category: validCats.includes(it.category) ? it.category : 'Udvikling',
+          day: Math.max(1, Math.min(days, Number(it.day) || 1)),
+          description: it.description || '',
+          goals: it.goals || '',
+          materials: it.materials || '',
+          time: it.time || '',
+          teachers: it.teachers || '',
+          notes: it.notes || ''
+        })) : []
+      };
+      persist();
+      renderDesigner();
+      switchTab('designer');
+      showToast('Forløbet er indlæst i PBL Designer ✓');
+    }
+
+    // =========================================================
+    // 3. KOMPLET VIDENS- OG INSPIRATIONSDATABASE (25 PROJEKTER)
+    // =========================================================
+    const PBL_DATABASE = {
+      didactics: {
+        grundelementer: [
+          {
+            title: 'Krop og erfaring',
+            colorClass: 'krop',
+            summary: 'Læring foregår i samspil med kroppens erfaring, der dannes ved at handle, gøre og udføre et fag. Mindre stillesiddende og mere sanselig/praktisk undervisning.',
+            indicators: ['Udfører en aktivitet', 'Handler aktivt', 'Bevæger sig', 'Sanser']
+          },
+          {
+            title: 'Teori og fag',
+            colorClass: 'teori',
+            summary: 'Fag og teori er med til at skabe forståelser og sætte ord og fagbegreber på de handlinger og produkter, som eleverne skaber.',
+            indicators: ['Beskriver', 'Forklarer', 'Analyserer', 'Reflekterer']
+          },
+          {
+            title: 'Handling og produkt',
+            colorClass: 'handling',
+            summary: 'Handling kan være alt fra at afprøve en idé til at få den til at ske eller skabe et konkret produkt (fysisk eller digitalt) til en relevant modtager.',
+            indicators: ['Tester', 'Skaber', 'Udvikler', 'Bygger', 'Designer']
+          }
+        ],
+        abcDifferentiering: {
+          intro: 'Alle elever arbejder med det samme emne og fælles læringsmål, men opgaverne undervejs tilpasses tre mestringsniveauer (A, B og C), så alle udfordres på deres niveau.',
+          levels: [
+            {
+              level: 'Niveau A',
+              description: 'Løse enkle opgaver, hvor grundlæggende viden og færdigheder anvendes på en let opgave – fx selvstændigt at løse næsten samme opgave, som læreren har gennemgået.',
+              verbs: ['Vide', 'Referere', 'Genkende', 'Forstå', 'Forklare med egne ord'],
+              examples: 'Matematik: Design en simpel tælleleg med farvede klodser og forklar aktiviteten med egne ord. Dansk: Skriv en instruktion med én sætning pr. trin ud fra skabelon. H&D: Skab en enkel plakat med tydelig overskrift og 2-3 illustrationer.'
+            },
+            {
+              level: 'Niveau B',
+              description: 'Løse opgaver af stigende sværhedsgrad, hvor forskellige færdigheder kombineres, så eleven skal skelne og vælge mellem metoder for at løse opgaven i sin helhed.',
+              verbs: ['Anvende', 'Afprøve', 'Bruge', 'Analysere', 'Nedbryde i dele', 'Skille', 'Se system/struktur'],
+              examples: 'Matematik: Lav en sorteringsaktivitet efter både form og farve + et simpelt evalueringsskema. Dansk: Skriv en detaljeret flertrinsvejledning med kontroltrin. H&D: Analyser plakater og kombiner farver, typografi og sektioner.'
+            },
+            {
+              level: 'Niveau C',
+              description: 'Refleksion over rækkevidden af færdigheder, kritisk diskussion, nye sammenhænge, egne vurderingskriterier og selvstændig produktudvikling.',
+              verbs: ['Fortolke', 'Vurdere', 'Bedømme ud fra kriterier', 'Gå fra dele til helhed', 'Opstille handlingsforskrifter', 'Skabe, designe og udvikle'],
+              examples: 'Matematik: Skab en kompleks mønster- og sorteringsaktivitet samt vurderingskriterier og forslag til skalering. Dansk: Udarbejd en vejledning med refleksionsspørgsmål til målgruppen. H&D: Udvikl flere plakatudkast og vurder dem kritisk ud fra målgruppens perspektiv.'
+            }
+          ]
+        },
+        variationEVA: [
+          { title: '1. Variation ud fra undervisningens mål', text: 'Forskellige undervisningsmål kræver varierende metoder, så eleverne møder stoffet på flere måder.' },
+          { title: '2. Tydelig instruktion og struktur', text: 'Når arbejdsformer skifter, skal læreren give klare rammer og instruktioner, så eleverne ved, hvad der forventes.' },
+          { title: '3. Balance mellem skift og fordybelse', text: 'Variation fremmer motivation, men eleverne skal samtidig have ro og tid til fordybelse uden for mange afbrydelser.' },
+          { title: '4. Sammenhæng i undervisningen', text: 'Skift mellem praktiske og teoretiske aktiviteter skal opleves som sammenhængende omkring det overordnede mål.' },
+          { title: '5. Organisatoriske rammer', text: 'Samarbejde på tværs af fag gennem fx holddeling, omlagte dage eller tværfaglige projekter understøtter praksisfaglighed (EVA, 2024).' }
+        ],
+        projektPokerProcess: [
+          { step: '1. Individuel gennemgang (5 min.)', text: 'Hver lærer i teamet skimmer Projekt Poker-kortene for at få overblik.' },
+          { step: '2. Udvælgelse', text: 'Hver deltager vælger et forløbskort eller delelementer, der virker særligt relevante for klassen.' },
+          { step: '3. Præsentation og idéudveksling', text: 'På skift præsenterer teamet de kort, de er blevet inspireret af, og drøfter hvordan de kan kombineres.' },
+          { step: '4. Konkret planlægning', text: 'Teamet udvælger de bedste idéer og omsætter dem til en konkret plan i PBL Designer.' }
+        ]
+      },
+      projects: [
+        {
+          id: 'pf-01',
+          source: 'Mønsterforløb · Praksisfaglighed.dk',
+          featured: true,
+          title: 'Design en matematikaktivitet til en yngre klasse',
+          subjectsDisplay: 'Matematik, Dansk, Håndværk og design',
+          filterTags: ['Matematik', 'Dansk', 'Håndværk & design'],
+          product: 'Matematikboder for børnehaveklassen, instruerende tekster og børnevenlige reklameplakater – differentieret på A-, B- og C-niveau.',
+          description: 'Gennemarbejdet tværfagligt PBL-mønsterforløb (fx 4. kl. for 0. kl. eller 6. kl. for 4. kl.). Eleverne designer sjove matematikaktiviteter med former, farver og tal, skriver en instruerende vejledning i Dansk, designer en reklameplakat i Håndværk & design og afholder en besøgsformiddag med matematikboder.',
+          activities: [
+            'Matematik: Afprøv spil som dart og cornhole (mål, tal, afstand) og design egen matematikaktivitet på niveau A, B eller C.',
+            'Dansk: Skriv en enkel og tydelig instruerende tekst til børnehaveklassen tilpasset målgruppen.',
+            'Håndværk & design: Design en reklameplakat med overskrift, primærfarver (rød, blå, gul) og håndtegnede illustrationer.',
+            'Besøgsdag: Brug 1. time på at opbygge boderne i ro og guide 0. klasse til boder, der matcher deres niveau.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne udvikler, tester og afvikler konkrete matematikboder, instruktioner og plakater til yngre elever.',
+            teoriOgFag: 'Matematiske begreber (former, tal, sortering, mønstre) kobles med instruerende tekstgenre i Dansk og visuel kommunikation i H&D.',
+            kropOgErfaring: 'Eleverne prøver fysiske kastespil (dart/cornhole), bygger boder og agerer aktive værter for de yngre elever.'
+          },
+          abcBreakdown: {
+            matematik: [
+              'Niveau A: Design en simpel tælleleg med farvede klodser og former; forklar aktiviteten med egne ord.',
+              'Niveau B: Lav en sorteringsaktivitet efter både form og farve + instruktionsvejledning og simpelt evalueringsskema.',
+              'Niveau C: Skab en aktivitet med tælling, sortering og mønstre samt vurderingskriterier og forslag til skalering.'
+            ],
+            dansk: [
+              'Niveau A: Skriv instruktion med én sætning pr. trin ud fra skabelon.',
+              'Niveau B: Skriv detaljeret flertrinsvejledning (farve + størrelse) inkl. kontroltrin.',
+              'Niveau C: Udarbejd vejledning med uddybende refleksionsspørgsmål til børnene samt illustration.'
+            ],
+            haandvaerkOgDesign: [
+              'Niveau A: Skab en simpel plakat med overskrift, 2-3 illustrationer samt tid, sted og formål.',
+              'Niveau B: Analyser plakater og inddel i sektioner med bevidst brug af skrifttyper, primærfarver og billeder.',
+              'Niveau C: Udvikl flere plakatudkast, vurder dem kritisk ud fra målgruppens perspektiv og begrund designvalgene.'
+            ]
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Design en matematikaktivitet til en yngre klasse',
+            subject: 'Matematik, Dansk & Håndværk og design',
+            question: 'Hvordan designer vi sjove matematikboder, tydelige instruktioner og plakater, så børnehaveklassen lærer om tal, former og farver?',
+            goals: 'Koble matematik (tal, former, sortering, mønstre), dansk (instruerende tekst) og H&D (plakatdesign) med ABC-differentiering.',
+            product: 'Matematikboder, instruerende vejledninger og reklameplakater til besøgsdag med 0. klasse.',
+            evaluation: 'Afvikling af besøgsformiddag med 0. klasse samt vurdering af bodernes faglige udbytte på niveau A, B og C.',
+            items: [
+              { name: 'Kickoff', category: 'Opstart', day: 1, description: 'Matematik: Afprøv dart og cornhole (mål, tal, afstand) og brainstorm på matematikboder til 0. klasse.', goals: 'Få kropslig erfaring med spil og talforståelse.', materials: 'Dart, cornhole, klodser, papfigurer', time: '1.-2. lektion', notes: 'Aftal dato og holdinddeling med 0. klasse.' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Matematik & Dansk: Udvikling af matematikaktivitet og skrivning af instruerende tekst til målgruppen.', goals: 'Omsætte faglig viden til konkret aktivitet og vejledning.', materials: 'Sorteringskasser, farvede former, skabeloner', time: '1.-4. lektion', notes: 'ABC-diff: A = tælleleg; B = form+farve sortering; C = mønstre + refleksionsspørgsmål.' },
+              { name: 'Skitsering', category: 'Udvikling', day: 3, description: 'Håndværk & design: Design af reklameplakat i primærfarver med overskrift, illustrationer, tid og sted.', goals: 'Styrke visuel formidling til yngre elever.', materials: 'Plakatkarton, tuscher, maling', time: '1.-3. lektion', notes: 'Hæng plakaterne op ved 0. klasse før besøgsdagen.' },
+              { name: 'Præsentation', category: 'Afslutning', day: 4, description: 'Besøgsdag: 1. time til opbygning af boder i ro. Derefter besøg af 0. klasse, som guides efter niveau.', goals: 'Afprøve produktet med autentiske modtagere.', materials: 'Færdige boder, plakater, instruktionskort', time: 'Formiddag', notes: 'Evaluer bodernes faglige udbytte bagefter.' }
+            ]
+          }
+        },
+        {
+          id: 'pp-02',
+          source: 'Projekt Poker',
+          title: 'Stemmer fra vores lokalsamfund',
+          subjectsDisplay: 'Dansk, Samfundsfag',
+          filterTags: ['Dansk', 'Samfundsfag'],
+          product: 'En samling narrative essays eller noveller baseret på interviews med personer fra lokalsamfundet, udgivet som en trykt bog eller på en blog.',
+          description: 'Eleverne udforsker deres lokalsamfund gennem interviews med forskellige personer for at forstå deres historier, udfordringer og drømme. Historierne omdannes til narrative essays eller noveller, der publiceres for at skabe empati og inspiration.',
+          activities: [
+            'Planlægning og udførelse af interviews med personer fra lokalsamfundet.',
+            'Analyse og refleksion over de indsamlede historier.',
+            'Skrivning og redigering af narrative essays eller noveller.',
+            'Design og udgivelse af den samlede produktion i en bog eller på en digital platform.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne producerer interviews og transformerer dem til en konkret bog eller blog.',
+            teoriOgFag: 'De arbejder med narrative strukturer, interviews som metode og analyse af historier.',
+            kropOgErfaring: 'Eleverne engagerer sig aktivt med lokalsamfundet ved at møde og interviewe mennesker ansigt til ansigt.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Stemmer fra vores lokalsamfund',
+            subject: 'Dansk & Samfundsfag',
+            question: 'Hvilke historier, drømme og udfordringer gemmer sig i vores lokalsamfund – og hvordan giver vi dem en stemme?',
+            goals: 'Mestre interviewteknik, narrativ fremstilling og samfundsfaglig forståelse af lokalområdet.',
+            product: 'Trykt antologi eller digital blog med narrative essays/noveller.',
+            evaluation: 'Udgivelsesreception og refleksion over interview- og skriveproces.',
+            items: [
+              { name: 'Kickoff', category: 'Opstart', day: 1, description: 'Introduktion til lokalsamfundets stemmer og udarbejdelse af interviewguide.', goals: 'Formulere drivende interviewspørgsmål.', materials: 'Optageudstyr, notesbøger', time: '1.-3. lektion', notes: '' },
+              { name: 'Interview', category: 'Undersøgelse', day: 2, description: 'Eleverne møder og interviewer borgere fra lokalsamfundet ansigt til ansigt.', goals: 'Indsamle autentiske livshistorier.', materials: 'Diktafon/telefon', time: 'Formiddag', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Analyse af interviews, skrivning af narrative essays/noveller og kammeratfeedback.', goals: 'Omsætte empiri til litterære tekster.', materials: 'Computere, skriveguide', time: 'Hele dagen', notes: '' },
+              { name: 'Udstilling', category: 'Afslutning', day: 4, description: 'Layout, udgivelse som bog/blog og reception for interviewpersoner og forældre.', goals: 'Formidle til autentiske modtagere.', materials: 'Printet bog / blogplatform', time: 'Eftermiddag', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-03',
+          source: 'Projekt Poker',
+          title: 'Byg din fremtidige bydel',
+          subjectsDisplay: 'Geografi, Matematik, Håndværk og design',
+          filterTags: ['Geografi', 'Matematik', 'Håndværk & design', 'Natur/STEM'],
+          product: 'En fysisk eller digital model af en bæredygtig bydel.',
+          description: 'Eleverne udvikler en model af en fremtidig bydel, hvor bæredygtighed og lokalhistorie spiller en central rolle. De undersøger eksisterende byplanlægning, inddrager lokale behov og designer løsninger, der understøtter miljøvenlig levevis.',
+          activities: [
+            'Undersøgelse af eksisterende bydele og lokale udfordringer.',
+            'Udarbejdelse af skitser og matematiske beregninger for den nye bydel.',
+            'Bygning af en model (fysisk eller digital) med fokus på arkitektur, energi og transport.',
+            'Fremvisning af modellen for lokalsamfundet med forklaringer om deres valg.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne designer og bygger en model, der viser deres vision for en fremtidig bydel.',
+            teoriOgFag: 'De anvender matematik til beregninger, geografi til planlægning og håndværk til at skabe deres model.',
+            kropOgErfaring: 'Eleverne arbejder praktisk med materialer og besøger lokale byområder for inspiration.'
+          },
+          designerPlan: {
+            days: 5,
+            title: 'Byg din fremtidige bydel',
+            subject: 'Geografi, Matematik & Håndværk og design',
+            question: 'Hvordan designer vi en bæredygtig fremtidig bydel, der forener lokalhistorie, grøn energi og gode byrum?',
+            goals: 'Anvende målestoksforhold, geografisk byplanlægning og modelbygning.',
+            product: 'Fysisk eller digital skalamodel af en bæredygtig bydel.',
+            evaluation: 'Byudviklingsudstilling med faglig argumentation for arkitektur, energi og transport.',
+            items: [
+              { name: 'Observation', category: 'Undersøgelse', day: 1, description: 'Byvandring i nærområdet: Undersøgelse af trafik, grønne områder og lokale behov.', goals: 'Identificere lokale byplanlægningsudfordringer.', materials: 'Kort, kamera, målebånd', time: '1.-4. lektion', notes: '' },
+              { name: 'Skitsering', category: 'Udvikling', day: 2, description: 'Udarbejdelse af grundplan, målestoksberegninger og skitser for bydelen.', goals: 'Beregne areal og målestoksforhold præcist.', materials: 'Millimeterpapir, passer, lineal', time: '1.-4. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Bygning af fysisk skalamodel i pap, træ og genbrugsmaterialer.', goals: 'Omsætte beregninger til konkret model.', materials: 'Pap, træ, limpistol, maling', time: 'Hele dagen', notes: '' },
+              { name: 'Feedback', category: 'Udvikling', day: 4, description: 'Faglig feedback på energi, transport og bæredygtighed samt finpudsning.', goals: 'Forbedre løsninger ud fra faglige kriterier.', materials: 'Feedbackskema', time: '1.-3. lektion', notes: '' },
+              { name: 'Udstilling', category: 'Afslutning', day: 5, description: 'Fremvisning af bydelen for forældre og lokalmiljø.', goals: 'Formidle og begrunde designvalg.', materials: 'Udstillingsborde, plancher', time: 'Eftermiddag', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-04',
+          source: 'Projekt Poker',
+          title: 'Fremtidens energiløsninger',
+          subjectsDisplay: 'Natur/Teknologi, Fysik/Kemi, Samfundsfag',
+          filterTags: ['Natur/STEM', 'Samfundsfag'],
+          product: 'En prototype af en bæredygtig energiløsning (f.eks. en solcellemodel eller vindmølle).',
+          description: 'Eleverne arbejder med at udvikle innovative energiløsninger, der kan bruges i deres lokalsamfund. De undersøger forskellige energikilder og bygger en prototype, som præsenteres med en forklaring på dens funktion og fordele.',
+          activities: [
+            'Undersøgelse af forskellige energiformer og fordele/ulemper.',
+            'Design og konstruktion af en prototype.',
+            'Testning af prototypens funktionalitet og justeringer baseret på resultaterne.',
+            'Fremvisning og forklaring af løsningen til klassekammerater og lokale interessenter.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne konstruerer en prototype, der illustrerer deres energiløsning.',
+            teoriOgFag: 'De anvender faglige begreber fra fysik/kemi og natur/teknologi for at forklare energikildernes funktion.',
+            kropOgErfaring: 'Eleverne udfører praktiske forsøg og bygger løsninger med egne hænder.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Fremtidens energiløsninger',
+            subject: 'Natur/Teknologi, Fysik/Kemi & Samfundsfag',
+            question: 'Hvilke bæredygtige energiløsninger kan forsyne vores lokalsamfund i fremtiden?',
+            goals: 'Forstå energiomsætning og vedvarende energikilder samt konstruere og teste en prototype.',
+            product: 'Fungerende prototype af solcelle- eller vindmølleløsning.',
+            evaluation: 'Måling af effekt og mundtlig fremlæggelse for interessenter.',
+            items: [
+              { name: 'Research', category: 'Undersøgelse', day: 1, description: 'Undersøgelse af energiformer og lokalsamfundets energibehov.', goals: 'Sammenligne vedvarende energikilder.', materials: 'Fagtekster, forsøgsudstyr', time: '1.-3. lektion', notes: '' },
+              { name: 'Prototype', category: 'Udvikling', day: 2, description: 'Design og konstruktion af energiprototype i værksted.', goals: 'Bygge en funktionel model.', materials: 'Generatorer, solceller, møllevinger, træ', time: 'Hele dagen', notes: '' },
+              { name: 'Test', category: 'Udvikling', day: 3, description: 'Test af prototypens ydeevne og justering af design.', goals: 'Systematisk afprøvning og fejlsøgning.', materials: 'Multimeter, blæser, lampe', time: '1.-3. lektion', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 4, description: 'Energimesse hvor eleverne demonstrerer prototyperne.', goals: 'Formidle naturfaglig viden klart.', materials: 'Udstillingsstande', time: '1.-3. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-05',
+          source: 'Projekt Poker',
+          title: 'Marsbasen – Hvordan ville vi overleve og trives på Mars',
+          subjectsDisplay: 'Naturfag, Samfundsfag, Historie',
+          filterTags: ['Natur/STEM', 'Samfundsfag', 'Historie'],
+          product: 'En model af en Marsbase samt en præsentation om de løsninger, der gør det muligt for mennesker at overleve og trives på Mars.',
+          description: 'Eleverne designer en Marsbase, hvor de tager højde for menneskelige behov og udfordringer ved at bo på en fremmed planet, og kombinerer naturvidenskabelig viden med teknologiske og samfundsmæssige løsninger.',
+          activities: [
+            'Introduktion til Mars miljø og udfordringer (tyngdekraft, stråling, madforsyning og ilt).',
+            'Undersøgelse af teknologiske løsninger som energi, vandrensning og landbrug i lukkede systemer.',
+            'Design og konstruktion af model af Marsbasen (fysisk eller digital).',
+            'Udarbejdelse af præsentation om løsningerne og menneskelige behov.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne skaber en model af en Marsbase og præsenterer løsninger på praktiske udfordringer.',
+            teoriOgFag: 'Eleverne anvender naturvidenskabelig og teknologisk viden om Mars miljø, energisystemer og menneskelige behov.',
+            kropOgErfaring: 'Gennem hands-on arbejde med design og bygning af modellen får eleverne erfaring med praktiske problemstillinger.'
+          },
+          designerPlan: {
+            days: 5,
+            title: 'Marsbasen – Overlevelse og trivsel på Mars',
+            subject: 'Naturfag, Samfundsfag & Historie',
+            question: 'Hvordan bygger vi et bæredygtigt samfund på Mars, hvor mennesker både overlever fysisk og trives socialt?',
+            goals: 'Koble naturvidenskabelig viden om kredsløb, ilt og vand med samfundsorganisering og modelbygning.',
+            product: 'Fysisk eller digital model af en Marsbase + faglig præsentation.',
+            evaluation: 'Præsentation for Rumfartsagenturet.',
+            items: [
+              { name: 'Kickoff', category: 'Opstart', day: 1, description: 'Introduktion til Mars klima, stråling, tyngdekraft og opdagelsesrejser.', goals: 'Forstå livsbetingelser på Mars.', materials: 'Billedmateriale, faktakort', time: '1.-3. lektion', notes: '' },
+              { name: 'Research', category: 'Undersøgelse', day: 2, description: 'Undersøgelse af lukkede kredsløb: ilt, vandrensning, dyrkning og samfundsregler.', goals: 'Finde teknologiske og sociale løsninger.', materials: 'Fagportaler', time: 'Hele dagen', notes: '' },
+              { name: 'Skitsering', category: 'Udvikling', day: 3, description: 'Plantegning af Marsbasen og fordeling af moduler.', goals: 'Strukturere basens funktioner.', materials: 'Tegnepapir, blyanter', time: '1.-2. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 4, description: 'Konstruktion af Marsbasens model i genbrugsmaterialer eller 3D.', goals: 'Bygge en detaljeret model.', materials: 'Pap, plastkupler, folie, lim', time: 'Hele dagen', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 5, description: 'Fremlæggelse af basens kredsløb og samfundsstruktur.', goals: 'Argumentere fagligt for basens løsninger.', materials: 'Modeller, slides', time: '1.-3. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-06',
+          source: 'Projekt Poker',
+          title: 'Historiens aktører',
+          subjectsDisplay: 'Historie, Dansk',
+          filterTags: ['Historie', 'Dansk'],
+          product: 'En dramatisk opførelse eller kortfilm skrevet og opført af eleverne.',
+          description: 'Eleverne arbejder med at levendegøre historiske perioder eller begivenheder fra dansk historie. Gennem historisk research og kreativt drama skaber de et manuskript og opfører deres fortolkning.',
+          activities: [
+            'Introduktion til emnet med historisk baggrundsmateriale.',
+            'Gruppearbejde med dyk ned i historiske kilder for en valgt begivenhed.',
+            'Udvikling af manuskript og iscenesættelse af begivenhederne.',
+            'Præsentation for klassen eller inviterede gæster med efterfølgende refleksion.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne omsætter idéer og research til et færdigt manuskript og en dramatisk optræden.',
+            teoriOgFag: 'Historisk viden og dramatiske teknikker understøtter elevernes forståelse og udtryksevne.',
+            kropOgErfaring: 'Gennem skuespil udforsker eleverne kroppens rolle i formidlingen af følelser og historiske temaer.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Historiens aktører',
+            subject: 'Historie & Dansk',
+            question: 'Hvordan levendegør vi historiske vendepunkter, så vi forstår menneskers valg dengang og deres betydning i dag?',
+            goals: 'Anvende historiske kilder, skrive dramatisk manuskript og formidle gennem skuespil eller kortfilm.',
+            product: 'Dramatisk opførelse eller kortfilm.',
+            evaluation: 'Premiere for klassen/gæster og refleksion over historisk empati.',
+            items: [
+              { name: 'Kildekritik', category: 'Undersøgelse', day: 1, description: 'Valg af historisk begivenhed og dyk ned i historiske kilder.', goals: 'Analysere historiske aktørers motiver.', materials: 'Kildesamlinger', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Manuskriptskrivning, replikker og storyboard.', goals: 'Omsætte viden til dramatisk fortælling.', materials: 'Manuskriptskabelon', time: 'Hele dagen', notes: '' },
+              { name: 'Revision', category: 'Udvikling', day: 3, description: 'Prøver eller optagelse og klipning med fokus på kropssprog.', goals: 'Styrke udtryksevne og troværdighed.', materials: 'Kamera/iPad, rekvisitter', time: 'Hele dagen', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 4, description: 'Opførelse eller filmvisning for klassen eller gæster.', goals: 'Formidle historien engagerende.', materials: 'Projektor/scene', time: '1.-3. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-07',
+          source: 'Projekt Poker',
+          title: 'Mit Danmark – set med ungdommens øjne',
+          subjectsDisplay: 'Dansk, Samfundsfag',
+          filterTags: ['Dansk', 'Samfundsfag'],
+          product: 'En digital fortælling i form af en kort video, podcast eller fotoudstilling.',
+          description: 'Eleverne arbejder med digitale medier for at skabe personlige fortællinger om deres liv og oplevelser i Danmark. De lærer at kombinere billeder, lyd og video til at udtrykke deres perspektiv som unge i dag.',
+          activities: [
+            'Introduktion til digitale medieformater som video, podcast og fotokunst.',
+            'Brainstorming: Hvad betyder Danmark for unge?',
+            'Dokumentation af egne oplevelser gennem interviews, fotos og lydoptagelser.',
+            'Produktion og redigering af digitale fortællinger.',
+            'Fremvisning og refleksion over identitet og Danmark som helhed.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne udvikler deres idéer til færdige digitale produkter med egne refleksioner.',
+            teoriOgFag: 'Medieteori, kommunikationsstrategier og samfundsmæssige begreber styrker forståelsen af identitetsdannelse.',
+            kropOgErfaring: 'Eleverne reflekterer over egne erfaringer og bruger dem aktivt i deres produktioner.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Mit Danmark – set med ungdommens øjne',
+            subject: 'Dansk & Samfundsfag',
+            question: 'Hvordan ser Danmark og ungdomslivet ud gennem vores egne øjne i dag?',
+            goals: 'Beherske multimodale virkemidler, medieteori og refleksion over identitet.',
+            product: 'Kort video, podcast eller fotoudstilling.',
+            evaluation: 'Mediefestival i klassen med peer-feedback.',
+            items: [
+              { name: 'Brainstorm', category: 'Opstart', day: 1, description: 'Introduktion til digitale formater og idéudvikling om unges hverdag.', goals: 'Vælge vinkel og medieformat.', materials: 'Eksempelproduktioner', time: '1.-3. lektion', notes: '' },
+              { name: 'Observation', category: 'Undersøgelse', day: 2, description: 'Optagelse af fotos, lyd og interviews i elevernes egne miljøer.', goals: 'Indsamle autentisk billed- og lydmateriale.', materials: 'Smartphone/kamera, mikrofon', time: 'Hele dagen', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Redigering af video, lydklip eller opsætning af fotoudstilling.', goals: 'Anvende virkemidler bevidst.', materials: 'Redigeringsprogram', time: 'Hele dagen', notes: '' },
+              { name: 'Udstilling', category: 'Afslutning', day: 4, description: 'Fremvisning og samtale om identitet og ungdomskultur.', goals: 'Præsentere egne medieprodukter.', materials: 'Storskærm', time: '1.-3. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-08',
+          source: 'Projekt Poker',
+          title: 'Danmark gennem de små øjeblikke',
+          subjectsDisplay: 'Dansk, Historie, Samfundsfag',
+          filterTags: ['Dansk', 'Historie', 'Samfundsfag'],
+          product: 'En samling af podcasts med interviews og fortællinger om hverdagslivet i Danmark fra forskellige generationer.',
+          description: 'Eleverne undersøger og formidler hverdagslivet i Danmark gennem små personlige fortællinger, interviewer forskellige generationer og producerer podcasts, der skildrer samfundsændringer.',
+          activities: [
+            'Planlægge og gennemføre interviews med ældre generationer.',
+            'Skrive manuskripter og redigere lydfiler til podcasts.',
+            'Præsentere podcastserien for klassekammerater og eventuelt forældre.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne skaber podcasts, hvor de formidler hverdagslivet gennem lydfortællinger.',
+            teoriOgFag: 'Danskfaglige kompetencer inden for interviewteknik og formidling samt samfundsfaglige perspektiver.',
+            kropOgErfaring: 'De oplever betydningen af mundtlig formidling og arbejder praktisk med lydteknologi og interviews.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Danmark gennem de små øjeblikke',
+            subject: 'Dansk, Historie & Samfundsfag',
+            question: 'Hvordan har hverdagslivet i Danmark forandret sig på tværs af generationer?',
+            goals: 'Koble mundtlig historie, interviewteknik og podcastproduktion.',
+            product: 'Podcastserie med generationsfortællinger.',
+            evaluation: 'Lytte-café for klassen og forældre.',
+            items: [
+              { name: 'Planlægning', category: 'Opstart', day: 1, description: 'Historisk baggrundsresearch og forberedelse af interviews med ældre generationer.', goals: 'Formulere åbne spørgsmål om hverdagsliv.', materials: 'Spørgeguide', time: '1.-3. lektion', notes: '' },
+              { name: 'Interview', category: 'Undersøgelse', day: 2, description: 'Gennemførelse og lydoptagelse af samtaler.', goals: 'Optage god lyd og skabe tryg samtale.', materials: 'Optager/mobil', time: 'Eftermiddag', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Speak-manuskript, lydredigering og klipning af podcastepisode.', goals: 'Opbygge en fængende lydfortælling.', materials: 'Lydredigeringsværktøj', time: 'Hele dagen', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 4, description: 'Fælles lytte-session og samtale om samfundsudviklingen.', goals: 'Reflektere over historisk forandring.', materials: 'Højttalere', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-09',
+          source: 'Projekt Poker',
+          title: 'Mit Danmark – min fremtid',
+          subjectsDisplay: 'Samfundsfag, Dansk, Historie',
+          filterTags: ['Samfundsfag', 'Dansk', 'Historie'],
+          product: 'En digital kampagne med plakater og korte videoer, hvor eleverne præsenterer deres visioner for fremtidens Danmark.',
+          description: 'Eleverne udvikler en politisk kampagne, der præsenterer deres vision for Danmarks fremtid gennem plakater, videoer og slogans om fx miljø, uddannelse, lighed eller sundhed.',
+          activities: [
+            'Introduktion til politisk kommunikation og kampagnens betydning i demokratiet.',
+            'Brainstorming af temaer og værdier til deres kampagne.',
+            'Produktion af plakater, slogans og korte videoer.',
+            'Feedbackrunde hvor eleverne evaluerer hinandens kampagner.',
+            'Præsentation af de færdige kampagner via SkoleTube.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne udarbejder en politisk kampagne ved at omsætte holdninger til konkrete produkter.',
+            teoriOgFag: 'Viden om demokrati, politisk kommunikation og samfundsmæssige problemstillinger.',
+            kropOgErfaring: 'Eleverne arbejder med egne værdier og bruger kreative og praktiske metoder til at udtrykke dem.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Mit Danmark – min fremtid',
+            subject: 'Samfundsfag, Dansk & Historie',
+            question: 'Hvordan kan vi som unge bruge politisk kommunikation til at påvirke fremtidens Danmark?',
+            goals: 'Analysere og anvende retoriske og visuelle virkemidler i politiske kampagner.',
+            product: 'Digital kampagnepakke med valgplakat, slogan og video.',
+            evaluation: 'Kampagnefremvisning og medievurdering i klassen.',
+            items: [
+              { name: 'Kickoff', category: 'Opstart', day: 1, description: 'Analyse af politiske kampagner og valg af mærkesager.', goals: 'Forstå politisk kommunikation.', materials: 'Kampagneeksempler', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Udvikling af slogans, design af plakater og optagelse af videoer.', goals: 'Formidle værdier klart.', materials: 'Plakatpapir/Canva, kamera', time: 'Hele dagen', notes: '' },
+              { name: 'Feedback', category: 'Udvikling', day: 3, description: 'Kammeratfeedback på budskab og modtagerappel samt tilretning.', goals: 'Skærpe kampagnens gennemslagskraft.', materials: 'Feedbackkriterier', time: '1.-3. lektion', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 4, description: 'Præsentation via SkoleTube og drøftelse af visionerne.', goals: 'Fremlægge og forsvare politiske visioner.', materials: 'SkoleTube, projektor', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-10',
+          source: 'Projekt Poker',
+          title: 'Når folket taler',
+          subjectsDisplay: 'Samfundsfag, Dansk, Historie',
+          filterTags: ['Samfundsfag', 'Dansk', 'Historie'],
+          product: 'En simuleret demonstration på skolen, hvor eleverne skaber bannere, taler og slogans for en sag, de brænder for.',
+          description: 'Eleverne undersøger historiske og nutidige demonstrationer og deres rolle i samfundet, vælger en sag og afholder en demonstration på skolen med taler, bannere og kampråb.',
+          activities: [
+            'Undersøgelse af historiske og moderne demonstrationer (kvindebevægelsen, klimabevægelser, borgerrettigheder).',
+            'Brainstorming og valg af en sag at kæmpe for.',
+            'Produktion af bannere, slogans og taler.',
+            'Afholdelse af en simuleret demonstration på skolen.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne omsætter holdninger til bannere, slogans, taler og en fuld demonstration.',
+            teoriOgFag: 'Samfundsfaglig og historisk viden om aktivisme og borgerindflydelse koblet med retorik.',
+            kropOgErfaring: 'Gennem demonstrationen engagerer eleverne sig fysisk i formidlingen og får en kropslig forståelse af fællesskab.'
+          },
+          designerPlan: {
+            days: 3,
+            title: 'Når folket taler',
+            subject: 'Samfundsfag, Dansk & Historie',
+            question: 'Hvordan har demonstrationer forandret samfundet – og hvordan taler man, så folk lytter?',
+            goals: 'Forstå demokratisk deltagelse og opbygge en retorisk stærk tale.',
+            product: 'Simuleret demonstration på skolen med bannere, slogans og taler.',
+            evaluation: 'Gennemførelse af demonstration og refleksion over retorik.',
+            items: [
+              { name: 'Research', category: 'Undersøgelse', day: 1, description: 'Undersøgelse af historiske og nutidige bevægelser og valg af egen sag.', goals: 'Kende demokratiske påvirkningskanaler.', materials: 'Historiske kilder', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Skrivning af appel-taler (etos, patos, logos) og maling af bannere.', goals: 'Koble retorik med visuelt udtryk.', materials: 'Stof/pap, maling, træpinde', time: 'Hele dagen', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 3, description: 'Afholdelse af demonstration i skolegården efterfulgt af evaluering.', goals: 'Opleve mundtlig og kropslig formidling.', materials: 'Megafon, bannere', time: '1.-3. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-11',
+          source: 'Projekt Poker',
+          title: 'Bagværk og slik',
+          subjectsDisplay: 'STEM-fagene, Hjemkundskab',
+          filterTags: ['Natur/STEM', 'Hjemkundskab/Madkundskab'],
+          product: 'Bagte kager med forskellige hævemidler og hjemmelavet slik.',
+          description: 'Eleverne udforsker de kemiske processer, der får bagværk til at hæve og slik til at forme sig, med fokus på læring gennem smag, sansning og eksperimenter.',
+          activities: [
+            'Bag kager med forskellige hævemidler (bagepulver, gær, natron).',
+            'Fremstilling af hjemmelavet slik (karamel, bolcher, skumfiduser).',
+            'Smagseksperimenter med smagskombinationer.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne bager kager og fremstiller slik ved at afprøve ingredienser og teknikker.',
+            teoriOgFag: 'Kemiske processer som hævning (kulsyredannelse) og karamellisering samt biologiske aspekter af smag og lugt.',
+            kropOgErfaring: 'Sanserne aktiveres gennem smag, lugt og føling med ingredienser og dejen.'
+          },
+          designerPlan: {
+            days: 3,
+            title: 'Bagværk og slik – Køkkenets kemi',
+            subject: 'STEM & Madkundskab',
+            question: 'Hvilke kemiske reaktioner sker der, når kager hæver og sukker bliver til slik?',
+            goals: 'Forstå kulsyredannelse, gæring og karamellisering gennem praktisk madlavning.',
+            product: 'Testbagte kager og hjemmelavet slik med kemisk forklaring.',
+            evaluation: 'Smagspanel og dokumentation af forsøgsresultater.',
+            items: [
+              { name: 'Research', category: 'Undersøgelse', day: 1, description: 'Forsøg med hævemidler (gær, bagepulver, natron) og kulsyredannelse.', goals: 'Forstå kemisk vs. biologisk hævning.', materials: 'Mel, gær, bagepulver, natron', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Bagning af kontrolkager og fremstilling af karamel/bolcher.', goals: 'Anvende præcise mål og temperaturer.', materials: 'Skolekøkken, sukkertermometer', time: 'Hele dagen', notes: '' },
+              { name: 'Evaluering', category: 'Afslutning', day: 3, description: 'Sensorisk smagstest og faglig refleksion.', goals: 'Koble sanselige oplevelser med kemi.', materials: 'Smagsskema', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-12',
+          source: 'Projekt Poker',
+          title: 'Mini Cake Off – konkurrence i bagværk',
+          subjectsDisplay: 'Hjemkundskab, STEM-fagene',
+          filterTags: ['Hjemkundskab/Madkundskab', 'Natur/STEM', 'Matematik'],
+          product: 'Små kager med personligt design (målet er at bage den højeste og mest velsmagende kage i mikroovn).',
+          description: 'Eleverne deltager i en Mini Cake Off-konkurrence, hvor de kombinerer bagning med kreativitet og matematik for at måle ingredienser præcist af og designe små kager i mikroovn.',
+          activities: [
+            'Måling og vejning af ingredienser (matematiske beregninger og forholdstal).',
+            'Bagning af små kager med fokus på teknik og præcision.',
+            'Dekoration og præsentation af kager med et kreativt twist.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne skaber deres egne små kager og eksperimenterer med ingredienser og dekoration.',
+            teoriOgFag: 'Kombination af matematik til præcis måling og madkundskab til bagningens kemi.',
+            kropOgErfaring: 'Eleverne bruger hænder og sanser aktivt til at forme, dekorere og smage.'
+          },
+          designerPlan: {
+            days: 2,
+            title: 'Mini Cake Off – Præcision og bagværk',
+            subject: 'Matematik & Madkundskab',
+            question: 'Hvordan bruger vi matematisk præcision til at bage den højeste og flotteste mini-kage?',
+            goals: 'Beregne forholdstal og enheder samt designe et æstetisk produkt.',
+            product: 'Personligt designede mikroovnskager med målerapport.',
+            evaluation: 'Højdemåling, smagsbedømmelse og opskriftsberegninger.',
+            items: [
+              { name: 'Planlægning', category: 'Opstart', day: 1, description: 'Omregning af grundopskrift og planlægning af design.', goals: 'Mestre forholdstal og måleenheder.', materials: 'Opskrifter, vægt, lommeregner', time: '1.-2. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 1, description: 'Afvejning, bagning i mikroovn, højdemåling og dekoration.', goals: 'Arbejde præcist og eksperimenterende.', materials: 'Krus, mikroovn, ingredienser, lineal', time: '3.-4. lektion', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 2, description: 'Mini Cake Off-bedømmelse ud fra højde, smag og beregninger.', goals: 'Præsentere produkt og matematik.', materials: 'Bedømmelsesskema', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-13',
+          source: 'Projekt Poker',
+          title: 'Slikkets kemi: Fremstilling og smag',
+          subjectsDisplay: 'STEM-fagene, Hjemkundskab',
+          filterTags: ['Natur/STEM', 'Hjemkundskab/Madkundskab'],
+          product: 'Forskellige typer slik som vingummi, karameller, bolcher og skumfiduser.',
+          description: 'Eleverne arbejder med at forstå den kemi, der ligger bag fremstilling af slik, herunder sukkerstoffers reaktioner ved forskellige temperaturer og smagstilpasninger.',
+          activities: [
+            'Fremstilling af forskellige slags slik (karameller, skumfiduser, bolcher).',
+            'Temperaturmålinger og observation af sukkerets reaktioner ved forskellige varmegrader.',
+            'Smagstest og tilpasning af opskrifter.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne eksperimenterer med ingredienser og temperaturer for at fremstille velsmagende slik.',
+            teoriOgFag: 'Fagligt fokus på kemiens rolle i sukkerreaktioner og temperaturens betydning.',
+            kropOgErfaring: 'Eleverne bruger hænderne til at forme slik og sanserne til at vurdere smag og konsistens.'
+          },
+          designerPlan: {
+            days: 2,
+            title: 'Slikkets kemi: Temperatur og tilstandsformer',
+            subject: 'Fysik/Kemi & Madkundskab',
+            question: 'Hvordan ændrer sukkers struktur og konsistens sig ved præcise temperaturer?',
+            goals: 'Forstå opløselighed, krystallisering og temperaturstyring.',
+            product: 'Egenproducerede bolcher og karameller med temperaturkurve.',
+            evaluation: 'Dokumentation af temperaturer og smagsevaluering.',
+            items: [
+              { name: 'Research', category: 'Undersøgelse', day: 1, description: 'Gennemgang af sukkertyper, krystallisering og sikkerhed.', goals: 'Kende sammenhæng mellem temperatur og konsistens.', materials: 'Sukkertermometre, gryder', time: '1.-2. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 1, description: 'Fremstilling af karameller og bolcher med logføring af temperaturer.', goals: 'Styre varme og smag præcist.', materials: 'Sukker, glukose, smagsstoffer', time: '3.-5. lektion', notes: '' },
+              { name: 'Refleksion', category: 'Afslutning', day: 2, description: 'Sammenligning af konsistens og faglig opsamling.', goals: 'Formidle den kemiske proces.', materials: 'Cellofanposer, etiketter', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-14',
+          source: 'Projekt Poker',
+          title: 'Fælles skolehave',
+          subjectsDisplay: 'Natur/Teknologi',
+          filterTags: ['Natur/STEM'],
+          product: 'En fælles skolehave med forskellige grøntsager og blomster samt vækstjournaler.',
+          description: 'Eleverne udvikler en skolehave, hvor de både planter grøntsager og blomster, samtidig med at de lærer om planternes livscyklus, fotosyntese og bæredygtighed.',
+          activities: [
+            'Planlægning af havedesign.',
+            'Klargøring af bede og såning af frø.',
+            'Plejning og vanding af planterne over tid.',
+            'Dokumentation af planters vækst i vækstjournaler.',
+            'Læring om fotosyntese og planters behov.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne arbejder praktisk med at skabe en have og følger projektet fra idé til produkt.',
+            teoriOgFag: 'Viden om planters vækst, fotosyntese og bæredygtig dyrkning kobles til praksis.',
+            kropOgErfaring: 'Eleverne bruger deres kroppe aktivt i havearbejdet og får erfaring med jord og planter.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Fælles skolehave',
+            subject: 'Natur/Teknologi',
+            question: 'Hvordan skaber vi en spiselig skolehave, der styrker biodiversitet og viden om planters liv?',
+            goals: 'Forstå fotosyntese, jordbundsforhold og bæredygtig dyrkning.',
+            product: 'Anlagt skolehave med planteskilte og vækstjournaler.',
+            evaluation: 'Løbende vækstjournal og fremvisning for skolen.',
+            items: [
+              { name: 'Planlægning', category: 'Opstart', day: 1, description: 'Opmåling af haveareal, valg af afgrøder og bedplan.', goals: 'Planlægge dyrkning efter sol og jord.', materials: 'Målebånd, frøposer, tegnepapir', time: '1.-2. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Klargøring af jord, såning og udplantning.', goals: 'Udføre praktisk havearbejde.', materials: 'Spader, river, vandkander', time: '1.-4. lektion', notes: '' },
+              { name: 'Observation', category: 'Undersøgelse', day: 3, description: 'Måling af spiring, føring af vækstjournal og fotosynteseforsøg.', goals: 'Systematisk naturfaglig observation.', materials: 'Vækstjournal, lineal, lup', time: '1.-2. lektion', notes: '' },
+              { name: 'Udstilling', category: 'Afslutning', day: 4, description: 'Opsætning af formidlingsskilte og rundvisning.', goals: 'Formidle viden om planter.', materials: 'Træskilte, tuscher', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-15',
+          source: 'Projekt Poker',
+          title: 'Byg en fuglekasse',
+          subjectsDisplay: 'Håndværk og design, Matematik, Biologi',
+          filterTags: ['Håndværk & design', 'Matematik', 'Natur/STEM'],
+          product: 'Fuglekasser til ophængning i skolens område.',
+          description: 'Eleverne bygger fuglekasser ved at arbejde med træmaterialer og værktøj. De lærer om fugles behov, konstruktionsteknikker og arbejder med præcisionsmålinger.',
+          activities: [
+            'Lære om fugle og deres behov for redepladser.',
+            'Design, målestokstegning og skitsering af fuglekasser.',
+            'Udskæring, samling og maling af træ.',
+            'Ophængning af kasser og observation af fugle.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Bygning af fuglekasser fra idé til praktisk produkt.',
+            teoriOgFag: 'Eleverne kobler viden om måleteknikker og fugles biologi via praktisk arbejde.',
+            kropOgErfaring: 'Brugen af værktøj og fysisk arbejde med træ giver eleverne erfaringer gennem handling.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Byg en fuglekasse',
+            subject: 'Håndværk & design, Matematik & Biologi',
+            question: 'Hvordan designer og bygger vi den ideelle redekasse til de lokale fuglearter omkring skolen?',
+            goals: 'Mestre målestokstegning, præcisionsmåling, træværktøj og fugles ynglebiologi.',
+            product: 'Færdigbyggede fuglekasser ophængt på skolens område.',
+            evaluation: 'Kvalitetstjek af mål og observation af kasserne i naturen.',
+            items: [
+              { name: 'Research', category: 'Undersøgelse', day: 1, description: 'Undersøgelse af lokale småfugle og krav til indflyvningshul og placering.', goals: 'Kende fuglearters biologiske behov.', materials: 'Fuglebøger', time: '1.-2. lektion', notes: '' },
+              { name: 'Skitsering', category: 'Udvikling', day: 2, description: 'Arbejdstegning i målestoksforhold med præcise mål.', goals: 'Anvende geometri og måleteknik.', materials: 'Lineal, vinkelhage, blyant', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Opmærkning, savning, boring af indflyvningshul og samling.', goals: 'Beherske håndværktøj sikkert.', materials: 'Brædder, sav, kopbor, skruer', time: 'Hele dagen', notes: '' },
+              { name: 'Observation', category: 'Afslutning', day: 4, description: 'Ophængning af fuglekasser på skolens område og kortlægning.', goals: 'Afprøve produktet i virkeligheden.', materials: 'Stige, beslag, kort', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-16',
+          source: 'Projekt Poker',
+          title: 'Kokkedyst med sæsonens råvarer',
+          subjectsDisplay: 'Hjemkundskab',
+          filterTags: ['Hjemkundskab/Madkundskab', 'Natur/STEM'],
+          product: 'Sunde måltider baseret på lokale og sæsonbestemte råvarer.',
+          description: 'Eleverne deltager i en kokkedyst, hvor de skal skabe kreative og sunde retter med lokale sæsonvarer. De lærer om ernæring, bæredygtighed og praktiske madlavningsteknikker.',
+          activities: [
+            'Oplæg om bæredygtighed i fødevareproduktion og sæsonens råvarer.',
+            'Planlægning af retter med vægt på madspildsminimering.',
+            'Madlavning i grupper med evaluering af bæredygtighedsaspektet.',
+            'Smagning og fælles refleksion over smag og bæredygtighed.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne producerer en ret med bevidsthed om madspild og bæredygtighed.',
+            teoriOgFag: 'De anvender viden om fødevarekilder, klimaaftryk og madspild i praksis.',
+            kropOgErfaring: 'De oplever, hvordan bevidste valg i madlavning kan gøre en forskel for miljøet.'
+          },
+          designerPlan: {
+            days: 3,
+            title: 'Kokkedyst med sæsonens råvarer',
+            subject: 'Madkundskab',
+            question: 'Hvordan sammensætter og tilbereder vi et velsmagende måltid af sæsonens lokale råvarer med minimalt madspild?',
+            goals: 'Kende sæsonkalenderen, råvarers klimaaftryk og tilberedningsteknikker.',
+            product: 'Bæredygtigt sæsonmåltid præsenteret for dommerpanel.',
+            evaluation: 'Bedømmelse af smag, kreativitet og råvareudnyttelse.',
+            items: [
+              { name: 'Research', category: 'Undersøgelse', day: 1, description: 'Undersøgelse af sæsonens grøntsager, klimaaftryk og madspild.', goals: 'Vælge bæredygtige råvarer.', materials: 'Sæsonkalender, råvarekort', time: '1.-2. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Tilberedning af retterne i skolekøkkenet med fokus på zero-waste.', goals: 'Omsætte opskrift til velsmagende ret.', materials: 'Sæsonråvarer, køkkenudstyr', time: 'Hele dagen', notes: '' },
+              { name: 'Evaluering', category: 'Afslutning', day: 3, description: 'Anretning, smagning og faglig begrundelse for råvarevalg.', goals: 'Reflektere over smag og klimaaftryk.', materials: 'Bedømmelsesskema', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-17',
+          source: 'Projekt Poker',
+          title: 'Kreativ kokkekunst og samtale',
+          subjectsDisplay: 'Hjemkundskab, Religion, Samfundsfag, Dansk',
+          filterTags: ['Hjemkundskab/Madkundskab', 'Samfundsfag', 'Dansk'],
+          product: 'En toretters menu samt reflektionsspørgsmål med fokus på livsværdier og traditioner.',
+          description: 'Eleverne inviterer forældre til en middag med fokus på fælles måltid og refleksion. Middagen består af to retter, og eleverne formulerer spørgsmål om livsværdier og traditioner.',
+          activities: [
+            'Udvikle en menu inspireret af familietraditioner eller religiøse højtider.',
+            'Introduktion til værdier og traditioner i religioner og samfund.',
+            'Madlavning i køkkenet med vægt på samarbejde og tidsstyring.',
+            'Udvikling af diskussionsspørgsmål om fællesskab og traditioner.',
+            'Servering og facilitering af refleksion ved bordene.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne skaber en konkret middag og formidler spørgsmål, der skaber dialog.',
+            teoriOgFag: 'Religionens og samfundets fokus på traditioner og værdier kobles med praktisk arbejde i madkundskab.',
+            kropOgErfaring: 'Eleverne bruger hænder og sanser i madlavningen og oplever glæden ved at bringe mennesker sammen.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Kreativ kokkekunst og samtale',
+            subject: 'Madkundskab, Religion, Samfundsfag & Dansk',
+            question: 'Hvordan kan mad og måltidstraditioner åbne for samtaler om livsværdier og fællesskab?',
+            goals: 'Forstå madkultur i religioner/traditioner, lave toretters menu og facilitere samtale.',
+            product: 'Toretters forældremiddag inkl. bordkort med samtalespørgsmål.',
+            evaluation: 'Gennemført forældremiddag og klasserefleksion.',
+            items: [
+              { name: 'Research', category: 'Undersøgelse', day: 1, description: 'Undersøgelse af madtraditioner og livsværdier på tværs af kulturer.', goals: 'Koble kulturforståelse til madkultur.', materials: 'Fagtekster', time: '1.-3. lektion', notes: '' },
+              { name: 'Planlægning', category: 'Opstart', day: 2, description: 'Sammensætning af menu og formulering af samtalespørgsmål.', goals: 'Udvikle reflekterende spørgsmål.', materials: 'Menukort, karton', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Tilberedning af toretters menu og borddækning.', goals: 'Samarbejde i køkkenet.', materials: 'Råvarer, duge', time: 'Eftermiddag', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 4, description: 'Servering for forældre og facilitering af dialog ved bordene.', goals: 'Agere værter og samtaleledere.', materials: 'Spisesal', time: 'Aftenarrangement', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-18',
+          source: 'Projekt Poker',
+          title: 'Mad og mening – Elever skaber dialog ved bordet',
+          subjectsDisplay: 'Madkundskab, Samfundsfag, Dansk',
+          filterTags: ['Hjemkundskab/Madkundskab', 'Samfundsfag', 'Dansk'],
+          product: 'En buffetmenu samt spørgsmål til samtalecirkler under middagen.',
+          description: 'Eleverne arrangerer en buffetmiddag for forældre, hvor måltidet fungerer som ramme for diskussioner om livsstil, hverdagsrutiner, nyheder eller ungdomsliv, mens eleverne fungerer som bordværter.',
+          activities: [
+            'Udvikle en buffetmenu med varierede retter og smagsprøver på forskellige kulturer.',
+            'Forberedelse af spørgsmål og samtaleregler til god dialog.',
+            'Praktisk arbejde med madlavning, buffetopstilling og servering.',
+            'Præsentation af mad og spørgsmål samt guidning af diskussionerne som bordværter.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne skaber en buffet og udvikler diskussionsspørgsmål, der bringer gæsterne sammen.',
+            teoriOgFag: 'Danskfagets fokus på kommunikation og samtaleregler kombineres med madkundskab.',
+            kropOgErfaring: 'Eleverne arbejder aktivt med kroppen gennem madlavning og bordopstilling.'
+          },
+          designerPlan: {
+            days: 3,
+            title: 'Mad og mening – Dialog ved bordet',
+            subject: 'Madkundskab, Samfundsfag & Dansk',
+            question: 'Hvordan skaber vi en god demokratisk samtale omkring et fælles måltid?',
+            goals: 'Planlægge en buffet, formulere samtaleregler og lede dialog som bordvært.',
+            product: 'Buffetmiddag for forældre med samtalekatalog.',
+            evaluation: 'Feedback fra gæster og refleksion over værtsrollen.',
+            items: [
+              { name: 'Planlægning', category: 'Opstart', day: 1, description: 'Menuplanlægning samt udarbejdelse af samtaleregler og emnekort.', goals: 'Skabe rammer for konstruktiv dialog.', materials: 'Menuplan, samtalekort', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Madlavning til buffet, anretning og øvelse i bordværtsrollen.', goals: 'Koordinere buffet og værtsskab.', materials: 'Køkkenråvarer, fade', time: 'Eftermiddag', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 3, description: 'Buffetmiddag og facilitering af samtalecirkler ved bordene.', goals: 'Lede samtaler med gæster.', materials: 'Samtalekort, buffet', time: 'Aftenarrangement', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-19',
+          source: 'Projekt Poker',
+          title: 'Den lokale virksomhed i fokus',
+          subjectsDisplay: 'Samfundsfag, Dansk, Håndværk og design',
+          filterTags: ['Samfundsfag', 'Dansk', 'Håndværk & design'],
+          product: 'En præsentation og en model/produkt, der repræsenterer den lokale virksomhed.',
+          description: 'Eleverne samarbejder med en lokal virksomhed for at forstå dens funktion, produkter og rolle i lokalsamfundet, og bygger en fysisk model eller et produkt.',
+          activities: [
+            'Besøg på lokal virksomhed med fokus på produktion, værdier og arbejdsgange.',
+            'Interviews med medarbejdere og ledelse.',
+            'Design og bygning af model eller fysisk produkt inspireret af virksomheden.',
+            'Udarbejdelse af præsentation om virksomhedens betydning for lokalsamfundet.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne indsamler data og bygger en fysisk model af virksomhedens aktiviteter eller produkter.',
+            teoriOgFag: 'Teori om erhverv, økonomi, værdikæde og samfund kobles med design og håndværk.',
+            kropOgErfaring: 'Eleverne arbejder med hænderne i modelbygning og oplever virksomhedens miljø gennem besøg.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Den lokale virksomhed i fokus',
+            subject: 'Samfundsfag, Dansk & Håndværk og design',
+            question: 'Hvilken rolle spiller lokale virksomheder – og hvordan ser deres værdikæde ud i praksis?',
+            goals: 'Forstå produktion, værdikæde og erhvervslivets betydning samt formidle via model.',
+            product: 'Fysisk model af virksomhed/produkt + præsentation.',
+            evaluation: 'Fremlæggelse for virksomhedsrepræsentanter.',
+            items: [
+              { name: 'Ekspertbesøg', category: 'Undersøgelse', day: 1, description: 'Virksomhedsbesøg med rundvisning og interviews.', goals: 'Indsamle viden om arbejdsgange og produktion.', materials: 'Interviewguide, kamera', time: 'Formiddag', notes: '' },
+              { name: 'Skitsering', category: 'Udvikling', day: 2, description: 'Analyse af værdikæde og skitsering af model.', goals: 'Omsætte observationer til designidé.', materials: 'Tegnepapir, blyanter', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Bygning af fysisk model inspireret af virksomheden.', goals: 'Skabe et håndværksmæssigt stærkt produkt.', materials: 'Træ, pap, metal, maling', time: 'Hele dagen', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 4, description: 'Præsentation af model og analyse for gæster fra virksomheden.', goals: 'Formidle erhvervsmæssig sammenhæng.', materials: 'Modeller', time: '1.-3. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-20',
+          source: 'Projekt Poker',
+          title: 'Den lokale kunstner',
+          subjectsDisplay: 'Håndværk og design',
+          filterTags: ['Håndværk & design', 'Billedkunst'],
+          product: 'Et fælles kunstværk skabt i samarbejde med en lokal kunstner.',
+          description: 'Eleverne samarbejder med en lokal kunstner om at udvikle og skabe et kunstværk med udgangspunkt i et tema eller lokalhistorie, hvor elevernes bidrag integreres i det fælles værk.',
+          activities: [
+            'Introduktion til den lokale kunstners arbejde og stil.',
+            'Besøg i kunstnerens atelier eller værksted for inspiration.',
+            'Udvikling af idéer og skitser i samarbejde med kunstneren.',
+            'Produktion af delelementer til det fælles kunstværk.',
+            'Udstilling af det fælles kunstværk på skolen eller i lokalsamfundet.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne deltager aktivt i den kreative proces og skaber et fælles kunstværk.',
+            teoriOgFag: 'Eleverne lærer om kunstneriske udtryk, farvelære, komposition og materialevalg.',
+            kropOgErfaring: 'Eleverne bruger kroppen i arbejdet med kunstneriske materialer og teknikker.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Den lokale kunstner – Fælles værk',
+            subject: 'Håndværk og design & Billedkunst',
+            question: 'Hvordan kan vi i samarbejde med en lokal kunstner udtrykke vores lokalhistorie i et fælles kunstværk?',
+            goals: 'Anvende farvelære, komposition og håndværksmæssige teknikker.',
+            product: 'Fælles kunstværk udstillet på skolen eller i lokalområdet.',
+            evaluation: 'Fernisering med kunstneren og forældre.',
+            items: [
+              { name: 'Ekspertbesøg', category: 'Undersøgelse', day: 1, description: 'Besøg i kunstners værksted eller workshop på skolen.', goals: 'Få indsigt i kunstneriske teknikker.', materials: 'Skitsebøger', time: '1.-3. lektion', notes: '' },
+              { name: 'Skitsering', category: 'Udvikling', day: 2, description: 'Idéudvikling, farveprøver og skitsering af delelementer.', goals: 'Arbejde med komposition.', materials: 'Akvarel, kul, papir', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Fremstilling og sammensætning af alle elevernes bidrag.', goals: 'Samarbejde om æstetisk helhed.', materials: 'Lærred/træplader, maling, ler', time: 'Hele dagen', notes: '' },
+              { name: 'Udstilling', category: 'Afslutning', day: 4, description: 'Fernisering og ophængning af kunstværket.', goals: 'Præsentere værk for offentligheden.', materials: 'Værkbeskrivelse', time: 'Eftermiddag', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-21',
+          source: 'Projekt Poker',
+          title: 'Fortidens liv og håndværk',
+          subjectsDisplay: 'Historie, Dansk, Håndværk og design',
+          filterTags: ['Historie', 'Dansk', 'Håndværk & design'],
+          product: 'Modeller af redskaber og genstande inspireret af oldtiden samt udstillingstekster.',
+          description: 'Eleverne samarbejder med et lokalt museum for at genskabe redskaber og genstande fra oldtiden og afslutter med en udstilling på museet eller skolen.',
+          activities: [
+            'Besøg på det lokale museum for at se genstande fra oldtiden.',
+            'Undersøgelse af materialer og redskaber fra fortiden.',
+            'Praktisk arbejde med at lave modeller i træ, ler og andre materialer.',
+            'Skriftligt arbejde med formidlende udstillingstekster.',
+            'Opsætning af udstilling på museet eller skolen.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne arbejder med konkrete materialer for at genskabe oldtidens redskaber og genstande.',
+            teoriOgFag: 'I Historie lærer eleverne om oldtidens samfund og håndværkstraditioner og formidler skriftligt i Dansk.',
+            kropOgErfaring: 'Eleverne bruger deres hænder og krop til at forme og arbejde med naturlige materialer.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Fortidens liv og håndværk',
+            subject: 'Historie, Dansk & Håndværk og design',
+            question: 'Hvordan levede mennesker i oldtiden – og hvordan genskaber vi deres redskaber i praksis?',
+            goals: 'Koble historisk genstandsviden med praktisk håndværk og museumsformidling.',
+            product: 'Genskabte oldtidsredskaber samt udstillingstekster.',
+            evaluation: 'Museumsudstilling for besøgende.',
+            items: [
+              { name: 'Ekspertbesøg', category: 'Undersøgelse', day: 1, description: 'Besøg på lokalt museum: Observation af arkæologiske fund.', goals: 'Analysere fortidens materialer.', materials: 'Skitseblok, kamera', time: 'Formiddag', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Værkstedsarbejde med at forme redskaber i træ, ler og snor.', goals: 'Afprøve fortidens håndværksteknikker.', materials: 'Ler, træ, lædersnor, værktøj', time: 'Hele dagen', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Skrivning af præcise udstillingstekster i Dansk.', goals: 'Formidle historisk viden til besøgende.', materials: 'Computere, skiltekarton', time: '1.-3. lektion', notes: '' },
+              { name: 'Udstilling', category: 'Afslutning', day: 4, description: 'Opsætning af udstilling med genstande og tekstskilte.', goals: 'Præsentere håndværk og historie.', materials: 'Udstillingsborde', time: 'Eftermiddag', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-22',
+          source: 'Projekt Poker',
+          title: 'Matematik og historie på byvandring',
+          subjectsDisplay: 'Matematik, Historie',
+          filterTags: ['Matematik', 'Historie'],
+          product: 'Guidede byvandringer med matematiske beregninger og historiske fortællinger.',
+          description: 'Eleverne planlægger og gennemfører guidede byvandringer i deres lokalområde, hvor de kombinerer historiske fakta med praktiske matematiske opgaver om bygninger, målestokke og afstande.',
+          activities: [
+            'Research om lokale historiske bygninger og deres betydning.',
+            'Matematiske beregninger af afstande, højder og målestoksforhold med måleudstyr.',
+            'Udvikling af en ruteplan med stop for historiske fortællinger og matematiske opgaver.',
+            'Øvelse i at guide en gruppe gennem ruten.',
+            'Afsluttende byvandring for forældre og andre elever.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne måler, beregner og analyserer matematiske problemstillinger i konkrete omgivelser.',
+            teoriOgFag: 'Geometri, skala og afstand kobles med lokalhistorisk viden om bygningernes udvikling.',
+            kropOgErfaring: 'Eleverne bevæger sig rundt i lokalområdet og bruger kroppen til at måle og udføre beregninger.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Matematik og historie på byvandring',
+            subject: 'Matematik & Historie',
+            question: 'Hvordan kan vi bruge matematik og lokalhistorie til at skabe en levende byvandring?',
+            goals: 'Beregne højder, afstande og målestok samt formidle lokalhistorie.',
+            product: 'Guidet byvandringsrute med poster og matematiske udfordringer.',
+            evaluation: 'Gennemført byvandring med forældre og parallelklasse.',
+            items: [
+              { name: 'Research', category: 'Undersøgelse', day: 1, description: 'Lokalhistorisk research om udvalgte bygninger i byen.', goals: 'Udvælge historiske nedslag.', materials: 'Lokalarkiv, bykort', time: '1.-3. lektion', notes: '' },
+              { name: 'Observation', category: 'Undersøgelse', day: 2, description: 'Feltarbejde: Opmåling af afstande, højder og målestoksforhold.', goals: 'Anvende måleudstyr i virkeligheden.', materials: 'Målebånd, tommestok, vinkelmåler', time: 'Formiddag', notes: '' },
+              { name: 'Planlægning', category: 'Udvikling', day: 3, description: 'Udarbejdelse af ruteplan, postkort med opgaver og guide-oplæg.', goals: 'Koble matematikopgaver og formidling.', materials: 'Bykort, laminering', time: 'Hele dagen', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 4, description: 'Eleverne guider forældre og andre elever rundt på ruten.', goals: 'Formidle mundtligt i autentiske rammer.', materials: 'Ruteplan', time: 'Formiddag', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-23',
+          source: 'Projekt Poker',
+          title: 'Drager, frygt og mod',
+          subjectsDisplay: 'Billedkunst, Dansk',
+          filterTags: ['Billedkunst', 'Dansk'],
+          product: 'Monstre af genbrugsmaterialer, der symboliserer elevernes frygt og mod, samt små historier.',
+          description: 'Eleverne arbejder med temaerne frygt og mod gennem kunst og fortælling, bygger monstre der repræsenterer deres frygt, og skriver historier om hvordan de overvinder frygten.',
+          activities: [
+            'Introduktion til monstre som tema: Hvad gør noget skræmmende eller stærkt?',
+            'Brainstorm i grupper om hvad eleverne er bange for, og hvad der gør dem modige.',
+            'Design og bygning af monstre af genbrugsmaterialer, pap, maling og stof.',
+            'Fortælle og skrive små historier om monstrenes frygtsomme og modige sider.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne bygger monstre som et fysisk udtryk for refleksioner over frygt og mod.',
+            teoriOgFag: 'Dansk bruges til narrativer om frygt og mod, mens Billedkunst introducerer designprincipper.',
+            kropOgErfaring: 'Ved at bygge med hænderne oplever eleverne, hvordan fysiske handlinger udtrykker følelser.'
+          },
+          designerPlan: {
+            days: 3,
+            title: 'Drager, frygt og mod',
+            subject: 'Billedkunst & Dansk',
+            question: 'Hvordan kan vi give frygt og mod fysisk form gennem skulptur og fortælling?',
+            goals: 'Arbejde med tredimensionel formgivning i genbrugsmaterialer samt fortællestruktur.',
+            product: 'Skulpturelle monstre/drager + tilhørende fortællinger.',
+            evaluation: 'Udstilling og oplæsning.',
+            items: [
+              { name: 'Brainstorm', category: 'Opstart', day: 1, description: 'Samtale om frygt og mod samt skitsering af eget monster.', goals: 'Omsætte følelser til visuelle symboler.', materials: 'Skitsepapir, farver', time: '1.-2. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Konstruktion af monstre i genbrugsmaterialer samt skrivning af historie.', goals: 'Kombinere skulptur og tekst.', materials: 'Genbrugsmaterialer, limpistol, maling', time: 'Hele dagen', notes: '' },
+              { name: 'Udstilling', category: 'Afslutning', day: 3, description: 'Fernisering med monstre og oplæsning af historierne.', goals: 'Formidle kreativt udtryk.', materials: 'Udstillingspodier', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-24',
+          source: 'Projekt Poker',
+          title: 'Økonomiens Spilunivers',
+          subjectsDisplay: 'Matematik, Samfundsfag',
+          filterTags: ['Matematik', 'Samfundsfag'],
+          product: 'Et brætspil, der illustrerer økonomiske strategier og deres konsekvenser.',
+          description: 'Eleverne udvikler et brætspil i samarbejde med en lokal bank, hvor de gennem praktiske aktiviteter lærer om budgetter, investeringer, lån og opsparing.',
+          activities: [
+            'Introduktion til økonomiske begreber i workshops med lokal bank.',
+            'Brainstorming og idéudvikling til spillets tema og regler.',
+            'Praktisk arbejde med at designe spillebrikker, spilleplade og kort.',
+            'Testning og evaluering af spillet gennem rollespil.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne skaber et konkret spil, der visualiserer og afprøver økonomiske beslutninger.',
+            teoriOgFag: 'Begreber som budgettering, lån og investeringer integreres i spillets opbygning.',
+            kropOgErfaring: 'Ved at fremstille spillets fysiske elementer og deltage i spiltests lærer eleverne gennem handling.'
+          },
+          designerPlan: {
+            days: 4,
+            title: 'Økonomiens Spilunivers',
+            subject: 'Matematik & Samfundsfag',
+            question: 'Hvordan designer vi et brætspil, der lærer unge om budget, renter, opsparing og økonomiske valg?',
+            goals: 'Beregne procent, renter og budgetter samt omsætte økonomi til spilmekanik.',
+            product: 'Spilbart brætspil med spilleplade, hændelseskort og spilleregler.',
+            evaluation: 'Spiltest med parallelklasse og lokal bank.',
+            items: [
+              { name: 'Ekspertbesøg', category: 'Undersøgelse', day: 1, description: 'Workshop med lokal bankrådgiver om budget, lån, renter og opsparing.', goals: 'Forstå privatøkonomiske begreber.', materials: 'Budgetskemaer', time: '1.-3. lektion', notes: '' },
+              { name: 'Idégenerering', category: 'Udvikling', day: 2, description: 'Udvikling af spilkoncept, regnestykker til hændelseskort og spilleregler.', goals: 'Integrere matematik i spilmekanikken.', materials: 'Regneark, konceptark', time: '1.-3. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 3, description: 'Fremstilling af spilleplade, spillekort og brikker.', goals: 'Designe et funktionelt brætspil.', materials: 'Karton, tuscher, terninger', time: 'Hele dagen', notes: '' },
+              { name: 'Test', category: 'Afslutning', day: 4, description: 'Spilcafé hvor grupperne afprøver og vurderer hinandens spil.', goals: 'Teste spilbalance og læringsværdi.', materials: 'Færdige brætspil', time: '1.-3. lektion', notes: '' }
+            ]
+          }
+        },
+        {
+          id: 'pp-25',
+          source: 'Projekt Poker',
+          title: 'Alt det vi deler',
+          subjectsDisplay: 'Natur/Teknologi, Dansk, Billedkunst',
+          filterTags: ['Natur/STEM', 'Dansk', 'Billedkunst'],
+          product: 'Et fælles træ med blade, hvor hver elevs interesser og historier er repræsenteret.',
+          description: 'Eleverne laver et fælles livets træ, hvor hvert blad symboliserer noget, de har til fælles eller er stolte af, og kombinerer naturvidenskab om træer med kreativ udfoldelse og fællesskab.',
+          activities: [
+            'Udforskning af træer og deres symbolik i Natur/Teknologi.',
+            'Hver elev designer et blad med tegning eller tekst om noget vigtigt for dem.',
+            'Samling af bladene på en stor baggrund, der forestiller et træ.',
+            'Fælles præsentation af træet og elevernes tanker bag deres blade.'
+          ],
+          relations: {
+            handlingOgProdukt: 'Eleverne skaber et fælles træ, der repræsenterer klassens sammenhold.',
+            teoriOgFag: 'Natur/Teknologi giver viden om træer, mens Billedkunst og Dansk sikrer kreativt og sprogligt udtryk.',
+            kropOgErfaring: 'Ved at tegne, klippe og sætte sammen arbejder eleverne med både hænder og tanker.'
+          },
+          designerPlan: {
+            days: 3,
+            title: 'Alt det vi deler – Klassens livstræ',
+            subject: 'Natur/Teknologi, Dansk & Billedkunst',
+            question: 'Hvad binder os sammen som klasse – og hvordan kan naturens træer være billede på vores fællesskab?',
+            goals: 'Lære om træers opbygning og udtrykke egne værdier visuelt.',
+            product: 'Stort fælles træ med individuelle elevblade.',
+            evaluation: 'Fernisering i klassen med fortællinger om bladene.',
+            items: [
+              { name: 'Observation', category: 'Undersøgelse', day: 1, description: 'Tur ud til skolens træer: Undersøgelse af blade, bark og træets symbolik.', goals: 'Kende træers biologi og bladformer.', materials: 'Blade, lup, tegneblok', time: '1.-2. lektion', notes: '' },
+              { name: 'Produktion', category: 'Udvikling', day: 2, description: 'Design af personlige blade samt maling af træets stamme og grene.', goals: 'Kombinere sprogligt og kunstnerisk udtryk.', materials: 'Stort papir, maling, sakse, farver', time: 'Hele dagen', notes: '' },
+              { name: 'Præsentation', category: 'Afslutning', day: 3, description: 'Samling af træet og præsentation af hvert blads betydning.', goals: 'Styrke klassefællesskab og formidling.', materials: 'Lim, ophæng', time: '1.-2. lektion', notes: '' }
+            ]
+          }
+        }
+      ]
+    };
+
+    // =========================================================
+    // 4. FANE 2: PROJEKT POKER & VIDENSBANK RENDERING
+    // =========================================================
+    const SUBJECT_FILTERS = [
+      'Alle',
+      'Matematik',
+      'Dansk',
+      'Samfundsfag',
+      'Historie',
+      'Natur/STEM',
+      'Håndværk & design',
+      'Hjemkundskab/Madkundskab',
+      'Billedkunst'
+    ];
+
+    let activeSubjectFilter = 'Alle';
+
+    function switchKbSub(sub) {
+      const isCards = sub === 'cards';
+      el('kbSubCards').classList.toggle('active', isCards);
+      el('kbSubDidactics').classList.toggle('active', !isCards);
+      el('kbCardsSection').classList.toggle('hidden', !isCards);
+      el('kbFilterControls').classList.toggle('hidden', !isCards);
+      el('kbDidacticsSection').classList.toggle('hidden', isCards);
+      if (!isCards) renderDidactics();
+    }
+
+    function renderKnowledge() {
+      el('kbSubjectFilters').innerHTML = SUBJECT_FILTERS.map(subj => `
+        <button type="button" class="${activeSubjectFilter === subj ? 'active' : ''}" data-action="filter-subject" data-subject="${esc(subj)}">
+          ${esc(subj)}
+        </button>
+      `).join('');
+
+      const query = (el('kbSearch')?.value || '').trim().toLowerCase();
+
+      const filtered = PBL_DATABASE.projects.filter(p => {
+        const matchesSubj = activeSubjectFilter === 'Alle' || p.filterTags.includes(activeSubjectFilter);
+        if (!matchesSubj) return false;
+        if (!query) return true;
+        const text = [
+          p.title,
+          p.subjectsDisplay,
+          p.product,
+          p.description,
+          ...p.activities,
+          p.relations.handlingOgProdukt,
+          p.relations.teoriOgFag,
+          p.relations.kropOgErfaring
+        ].join(' ').toLowerCase();
+        return text.includes(query);
+      });
+
+      el('kbResultCount').textContent = `Viser ${filtered.length} af ${PBL_DATABASE.projects.length} forløb`;
+
+      if (!filtered.length) {
+        el('pokerGrid').innerHTML = `
+          <div class="panel" style="grid-column: 1 / -1; text-align:center; padding:32px;">
+            <p style="font-size:15px; margin:0 0 12px;">Ingen forløbskort matchede din søgning.</p>
+            <button type="button" data-action="reset-kb-filters">Nulstil søgning og filter</button>
+          </div>
+        `;
+        return;
+      }
+
+      el('pokerGrid').innerHTML = filtered.map((p, idx) => `
+        <article class="poker-card ${p.featured ? 'featured' : ''}">
+          <div>
+            <span class="source-tag ${p.featured ? 'model' : ''}">${esc(p.source)} · #${idx + 1}</span>
+            <h3>${esc(p.title)}</h3>
+          </div>
+
+          <div class="subject-pills">
+            ${p.subjectsDisplay.split(',').map(s => s.trim()).filter(Boolean).map(s => `<span class="subject-pill">${esc(s)}</span>`).join('')}
+          </div>
+
+          <div class="product-box">
+            <b>Autentisk produkt:</b> ${esc(p.product)}
+          </div>
+
+          <p class="poker-desc">${esc(p.description)}</p>
+
+          <div>
+            <strong style="font-size:12.5px; color:#334155;">Aktiviteter:</strong>
+            <ul class="poker-activities">
+              ${p.activities.map(a => `<li>${esc(a)}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="klimazirkus-triad">
+            <div class="kz-pill krop"><b>Krop &amp; erfaring:</b> ${esc(p.relations.kropOgErfaring)}</div>
+            <div class="kz-pill teori"><b>Teori &amp; fag:</b> ${esc(p.relations.teoriOgFag)}</div>
+            <div class="kz-pill handling"><b>Handling &amp; produkt:</b> ${esc(p.relations.handlingOgProdukt)}</div>
+          </div>
+
+          ${p.abcBreakdown ? `
+            <details class="abc-details-box">
+              <summary>Vis ABC-differentiering (Matematik, Dansk, Håndværk &amp; design)</summary>
+              <div style="margin-top:8px;">
+                <p style="margin:4px 0;"><b>Matematik:</b></p>
+                <ul style="margin:2px 0 8px; padding-left:18px;">${p.abcBreakdown.matematik.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
+                <p style="margin:4px 0;"><b>Dansk:</b></p>
+                <ul style="margin:2px 0 8px; padding-left:18px;">${p.abcBreakdown.dansk.map(d => `<li>${esc(d)}</li>`).join('')}</ul>
+                <p style="margin:4px 0;"><b>Håndværk &amp; design:</b></p>
+                <ul style="margin:2px 0 4px; padding-left:18px;">${p.abcBreakdown.haandvaerkOgDesign.map(h => `<li>${esc(h)}</li>`).join('')}</ul>
+              </div>
+            </details>
+          ` : ''}
+
+          <div class="poker-actions">
+            <button type="button" class="primary" data-action="use-poker-card" data-project-id="${esc(p.id)}">↳ Brug i PBL Designer</button>
+            <button type="button" data-action="adapt-poker-card" data-project-id="${esc(p.id)}">✦ Tilpas med AI</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderDidactics() {
+      const d = PBL_DATABASE.didactics;
+      el('didacticsContainer').innerHTML = `
+        <h2 style="margin:0 0 12px; color:#163e70;">1. Klimazirkus' 3 elementer i praksisfaglighed</h2>
+        <div class="didactic-grid">
+          ${d.grundelementer.map(g => `
+            <div class="didactic-card">
+              <div class="kz-pill ${g.colorClass}" style="margin-bottom:10px; font-weight:700; font-size:14px;">${esc(g.title)}</div>
+              <p style="margin:0 0 10px;">${esc(g.summary)}</p>
+              <strong style="font-size:12.5px; color:#475569;">Kommer til udtryk, når eleven:</strong>
+              <div class="verb-tags">
+                ${g.indicators.map(ind => `<span class="verb-tag">${esc(ind)}</span>`).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <h2 style="margin:0 0 12px; color:#163e70;">2. ABC-differentiering (Niveau A, B og C)</h2>
+        <p class="hint" style="margin-top:0; margin-bottom:14px;">${esc(d.abcDifferentiering.intro)}</p>
+        <div class="didactic-grid">
+          ${d.abcDifferentiering.levels.map(lvl => `
+            <div class="didactic-card">
+              <h3>${esc(lvl.level)}</h3>
+              <p style="margin:0 0 10px;">${esc(lvl.description)}</p>
+              <strong style="font-size:12.5px; color:#475569;">Handlingsverber:</strong>
+              <div class="verb-tags" style="margin-bottom:10px;">
+                ${lvl.verbs.map(v => `<span class="verb-tag">${esc(v)}</span>`).join('')}
+              </div>
+              <div class="product-box" style="font-size:12.5px;">
+                <b>Eksempler:</b><br>${esc(lvl.examples)}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="didactic-grid">
+          <div class="didactic-card">
+            <h3>3. EVA's 5 variationsprincipper</h3>
+            <ul style="padding-left:18px; margin:0;">
+              ${d.variationEVA.map(v => `<li style="margin-bottom:8px;"><b>${esc(v.title)}:</b> ${esc(v.text)}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="didactic-card">
+            <h3>4. Projekt Pokers 4-trins teamproces</h3>
+            <ul style="padding-left:18px; margin:0;">
+              ${d.projektPokerProcess.map(s => `<li style="margin-bottom:8px;"><b>${esc(s.step)}:</b> ${esc(s.text)}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    function handleUsePokerCard(projectId) {
+      const proj = PBL_DATABASE.projects.find(p => p.id === projectId);
+      if (!proj || !proj.designerPlan) return;
+      if (data.items.length > 0) {
+        askConfirm(
+          `Indlæs "${proj.title}"?`,
+          'Vil du erstatte det nuværende forløb i PBL Designer med dette forløb?',
+          'Ja, indlæs i PBL Designer',
+          () => applyPlanToDesigner(proj.designerPlan),
+          false
+        );
+      } else {
+        applyPlanToDesigner(proj.designerPlan);
+      }
+    }
+
+    function handleAdaptPokerCard(projectId) {
+      const proj = PBL_DATABASE.projects.find(p => p.id === projectId);
+      if (!proj) return;
+      switchTab('chat');
+      const promptText = `Tilpas Projekt Poker-kortet "${proj.title}" (${proj.subjectsDisplay}) til min klasse. Giv konkrete forslag til klassetrin, kobling af Krop & erfaring, Teori & fag og Handling & produkt, samt ABC-differentiering (niveau A, B og C), og lav planen klar til PBL Designer.`;
+      el('chatInput').value = promptText;
+      sendChat();
+    }
+
+    // =========================================================
+    // 5. FANE 3: GEMINI AI CHATBOT (INDBYGGET UDEN API-NØGLE)
+    // =========================================================
+    function buildSystemPrompt() {
+      const projectsText = PBL_DATABASE.projects.map((p, i) =>
+        `${i + 1}. "${p.title}" (${p.subjectsDisplay}) | Produkt: ${p.product} | Aktiviteter: ${p.activities.join('; ')} | Krop: ${p.relations.kropOgErfaring} | Teori: ${p.relations.teoriOgFag} | Handling: ${p.relations.handlingOgProdukt}`
+      ).join('\n');
+
+      return `Du er "Chatbot for praksisfaglighed via PBL" på ABSALONSKOLEN - HOLBÆK.
+Du hjælper lærere med at udvikle praksisfaglige PBL-forløb på dansk. Vær konkret, pædagogisk skarp, varm og handlingsorienteret.
+
+VIDENSBASE:
+1. Klimazirkus' 3 elementer:
+- Krop og erfaring (udfører aktivitet, handler aktivt, bevæger sig, sanser)
+- Teori og fag (beskriver, forklarer, analyserer, reflekterer)
+- Handling og produkt (tester, skaber, udvikler, bygger, designer til en autentisk modtager)
+
+2. ABC-differentiering (fælles emne og mål, 3 mestringsniveauer):
+- Niveau A: Enkle opgaver tæt på gennemgået eksempel. Verber: vide, referere, genkende, forstå, forklare med egne ord.
+- Niveau B: Stigende sværhedsgrad, kombinere færdigheder. Verber: anvende, afprøve, bruge, analysere, nedbryde i dele, skille, se system/struktur.
+- Niveau C: Refleksion, kritisk vurdering, egne kriterier, selvstændigt produkt. Verber: fortolke, vurdere, bedømme ud fra kriterier, gå fra dele til helhed, opstille handlingsforskrifter, skabe, designe og udvikle.
+
+3. EVA's 5 variationsprincipper:
+1) Variation ud fra undervisningens mål, 2) Tydelig instruktion og struktur, 3) Balance mellem skift og fordybelse, 4) Sammenhæng mellem praktisk og teoretisk arbejde, 5) Organisatoriske rammer (holddeling, tværfaglighed).
+
+4. Projekt Pokers 4-trins teamproces:
+1) Individuel gennemgang (5 min.), 2) Udvælgelse, 3) Præsentation og idéudveksling, 4) Konkret planlægning.
+
+5. Alle 25 forløb fra Projekt Poker & Praksisfaglighed.dk:
+${projectsText}
+
+FORMAT FOR STRUKTURERET PLAN TIL PBL DESIGNER:
+Når du foreslår eller tilpasser et konkret undervisningsforløb (en plan over dage/lektioner), SKAL du afslutte dit svar med en gyldig JSON-kodeblok i præcis dette format, så læreren med ét klik kan overføre planen til PBL Designer:
+\`\`\`json
+{
+  "plan": {
+    "days": 4,
+    "title": "Forløbets titel",
+    "subject": "Fag og klassetrin",
+    "question": "Drivende spørgsmål",
+    "goals": "Læringsmål",
+    "product": "Autentisk slutprodukt og modtager",
+    "evaluation": "Evalueringsform",
+    "items": [
+      {
+        "name": "Kickoff",
+        "category": "Opstart",
+        "day": 1,
+        "description": "Hvad eleverne gør",
+        "goals": "Mål for processen",
+        "materials": "Materialer",
+        "time": "1.-2. lektion",
+        "notes": "ABC-differentiering og Klimazirkus-kobling"
+      }
+    ]
+  }
+}
+\`\`\`
+Brug udelukkende disse 4 gyldige kategorier for "category": "Opstart", "Undersøgelse", "Udvikling", "Afslutning".`;
+    }
+
+    const SYSTEM_PROMPT = buildSystemPrompt();
+    let chatHistory = [];
+    let isSending = false;
+
+    const thinkingPhrases = [
+      'Tænker i praksisfaglige baner…',
+      'Kobler krop, teori og produkt…',
+      'Kigger i Projekt Poker-kortene…',
+      'Opstiller ABC-differentiering…',
+      'Bygger en rød tråd i forløbet…'
+    ];
+
+    function appendMessage(role, text, planObj) {
+      const box = el('messages');
+      const div = document.createElement('div');
+      div.className = 'bubble ' + role;
+      div.textContent = text;
+      box.appendChild(div);
+
+      if (planObj && typeof planObj === 'object') {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'import-action';
+        btn.textContent = '↳ Overfør forløb til PBL Designer';
+        btn.addEventListener('click', () => {
+          if (data.items.length > 0) {
+            askConfirm(
+              'Overfør forløb til PBL Designer?',
+              'Vil du erstatte det nuværende forløb på tidslinjen med det nye AI-forløb?',
+              'Ja, overfør forløb',
+              () => applyPlanToDesigner(planObj),
+              false
+            );
+          } else {
+            applyPlanToDesigner(planObj);
+          }
+        });
+        box.appendChild(btn);
+      }
+
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function extractPlanFromResponse(rawText) {
+      let cleanText = rawText || '';
+      let parsedPlan = null;
+
+      const jsonFenceMatch = cleanText.match(/```json\s*([\s\S]*?)```/i);
+      if (jsonFenceMatch && jsonFenceMatch[1]) {
+        try {
+          const obj = JSON.parse(jsonFenceMatch[1].trim());
+          if (obj && obj.plan && Array.isArray(obj.plan.items)) {
+            parsedPlan = obj.plan;
+          } else if (obj && Array.isArray(obj.items)) {
+            parsedPlan = obj;
+          }
+          cleanText = cleanText.replace(jsonFenceMatch[0], '').trim();
+        } catch (e) {
+          // Ignorer ugyldig JSON og behold teksten
+        }
+      }
+      return { cleanText, parsedPlan };
+    }
+
+    async function fetchGeminiWithBackoff(payload) {
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+      const delays = [1000, 2000, 4000];
+
+      for (let attempt = 0; attempt <= delays.length; attempt++) {
+        try {
+          const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (!res.ok) {
+            if ((res.status === 429 || res.status >= 500) && attempt < delays.length) {
+              await new Promise(r => setTimeout(r, delays[attempt]));
+              continue;
+            }
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData?.error?.message || `HTTP ${res.status}`);
+          }
+
+          return await res.json();
+        } catch (err) {
+          if (attempt < delays.length) {
+            await new Promise(r => setTimeout(r, delays[attempt]));
+            continue;
+          }
+          throw err;
+        }
+      }
+    }
+
+    async function sendChat() {
+      if (isSending) return;
+      const input = el('chatInput');
+      const message = (input.value || '').trim();
+      if (!message) return;
+
+      input.value = '';
+      appendMessage('user', message, null);
+      chatHistory.push({ role: 'user', parts: [{ text: message }] });
+
+      isSending = true;
+      el('sendBtn').disabled = true;
+
+      let phraseIndex = 0;
+      el('thinking').textContent = thinkingPhrases[0];
+      const timer = setInterval(() => {
+        phraseIndex = (phraseIndex + 1) % thinkingPhrases.length;
+        el('thinking').textContent = thinkingPhrases[phraseIndex];
+      }, 1500);
+
+      try {
+        const payload = {
+          contents: chatHistory,
+          systemInstruction: {
+            parts: [{ text: SYSTEM_PROMPT }]
+          }
+        };
+
+        const result = await fetchGeminiWithBackoff(payload);
+        const rawReply = result?.candidates?.[0]?.content?.parts?.[0]?.text || 'Jeg fik desværre intet svar tilbage. Prøv igen.';
+
+        chatHistory.push({ role: 'model', parts: [{ text: rawReply }] });
+
+        const { cleanText, parsedPlan } = extractPlanFromResponse(rawReply);
+        appendMessage('assistant', cleanText || rawReply, parsedPlan);
+      } catch (err) {
+        appendMessage(
+          'assistant',
+          'Der opstod en midlertidig forbindelsesfejl til AI-sparringspartneren (' + (err.message || 'ukendt fejl') + '). Prøv venligst at sende din besked igen om et øjeblik.',
+          null
+        );
+      } finally {
+        clearInterval(timer);
+        el('thinking').textContent = '';
+        isSending = false;
+        el('sendBtn').disabled = false;
+      }
+    }
+
+    function resetChat() {
+      chatHistory = [];
+      el('messages').innerHTML = '';
+      appendMessage(
+        'assistant',
+        'Samtalen er nulstillet. Fortæl mig klassetrin, fag, tid og tema – eller vælg et kort i Projekt Poker & Vidensbank, som vi skal tilpasse sammen.',
+        null
+      );
+      showToast('Ny samtale startet');
+    }
+
+    // =========================================================
+    // 6. FANESKIFT & CENTRAL EVENT DELEGATION
+    // =========================================================
+    function switchTab(tab) {
+      const isDesigner = tab === 'designer';
+      const isKnowledge = tab === 'knowledge';
+      const isChat = tab === 'chat';
+
+      el('designerView').classList.toggle('hidden', !isDesigner);
+      el('knowledgeView').classList.toggle('hidden', !isKnowledge);
+      el('chatView').classList.toggle('hidden', !isChat);
+
+      el('tabDesigner').classList.toggle('active', isDesigner);
+      el('tabKnowledge').classList.toggle('active', isKnowledge);
+      el('tabChat').classList.toggle('active', isChat);
+
+      // Vis top-knapper til eksport/import når man er på PBL Designer-fanen
+      el('designerTopActions').classList.toggle('hidden', !isDesigner);
+
+      if (isKnowledge) {
+        renderKnowledge();
+      }
+    }
+
+    // Global event delegation for alle klik i hele applikationen
+    document.addEventListener('click', e => {
+      const target = e.target.closest('[data-action]');
+      if (!target) return;
+
+      // For backdrop-close: luk kun hvis der klikkes direkte på selve baggrunden
+      if (target.dataset.action === 'backdrop-close') {
+        if (e.target === target) closeModal();
+        return;
+      }
+
+      const action = target.dataset.action;
+
+      switch (action) {
+        case 'switch-tab':
+          switchTab(target.dataset.tab);
+          break;
+        case 'save-file':
+          saveFile();
+          break;
+        case 'trigger-import':
+          el('importFile').click();
+          break;
+        case 'print-pdf':
+          window.print();
+          break;
+        case 'set-days':
+          setDays();
+          break;
+        case 'open-overview':
+          openOverview();
+          break;
+        case 'save-overview':
+          saveOverview();
+          break;
+        case 'new-custom':
+          newCustomProcess();
+          break;
+        case 'open-add-process':
+          openAddProcessModal(Number(target.dataset.index));
+          break;
+        case 'save-add-process':
+          saveAddProcess(Number(target.dataset.index));
+          break;
+        case 'choose-process':
+          openChooseProcessModal(Number(target.dataset.day));
+          break;
+        case 'save-choose-process':
+          saveChooseProcess(Number(target.dataset.day));
+          break;
+        case 'edit-process':
+          openEditProcessModal(target.dataset.id);
+          break;
+        case 'save-process':
+          saveProcess();
+          break;
+        case 'delete-process':
+          deleteProcess();
+          break;
+        case 'close-modal':
+          closeModal();
+          break;
+        case 'run-confirm':
+          closeModal();
+          if (typeof confirmCallback === 'function') {
+            const fn = confirmCallback;
+            confirmCallback = null;
+            fn();
+          }
+          break;
+        case 'switch-kb-sub':
+          switchKbSub(target.dataset.sub);
+          break;
+        case 'filter-subject':
+          activeSubjectFilter = target.dataset.subject || 'Alle';
+          renderKnowledge();
+          break;
+        case 'reset-kb-filters':
+          if (el('kbSearch')) el('kbSearch').value = '';
+          activeSubjectFilter = 'Alle';
+          renderKnowledge();
+          break;
+        case 'use-poker-card':
+          handleUsePokerCard(target.dataset.projectId);
+          break;
+        case 'adapt-poker-card':
+          handleAdaptPokerCard(target.dataset.projectId);
+          break;
+        case 'prompt-example':
+          el('chatInput').value = target.dataset.prompt || '';
+          sendChat();
+          break;
+        case 'send-chat':
+          sendChat();
+          break;
+        case 'reset-chat':
+          resetChat();
+          break;
+      }
+    });
+
+    // Input- og tastaturlyttere
+    el('teachers').addEventListener('change', e => {
+      data.teachers = e.target.value;
+      persist();
+    });
+
+    el('kbSearch').addEventListener('input', () => {
+      renderKnowledge();
+    });
+
+    el('chatInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendChat();
+      }
+    });
+
+    el('importFile').addEventListener('change', async e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      try {
+        const parsed = JSON.parse(await f.text());
+        if (!Number.isInteger(parsed.days) || !Array.isArray(parsed.items)) {
+          throw new Error('Ugyldigt format');
+        }
+        data = { ...blankPlan(), ...parsed };
+        persist();
+        renderDesigner();
+        showToast('Forløb åbnet ✓');
+      } catch (err) {
+        showToast('Filen kunne ikke åbnes som et PBL-forløb.', true);
+      }
+      e.target.value = '';
+    });
+
+    // Initialisering ved sideindlæsning
+    renderDesigner();
+    renderKnowledge();
+  </script>
+</body>
+</html>
