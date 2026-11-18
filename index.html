@@ -841,6 +841,7 @@
       <button type="button" id="tabKnowledge" data-action="switch-tab" data-tab="knowledge">🃏 Projekt Poker &amp; Vidensbank</button>
       <button type="button" id="tabChat" data-action="switch-tab" data-tab="chat">✦ AI – Praksisfaglighed</button>
       <button type="button" id="tabPrompt" data-action="switch-tab" data-tab="prompt">Prompt til ABC-differentiering</button>
+      <button type="button" id="tabPblPrompt" data-action="switch-tab" data-tab="pbl-prompt">✦ Prompt til PBL-forløb</button>
     </nav>
 
     <!-- FANE 1: PBL DESIGNER -->
@@ -1003,6 +1004,16 @@ Man kan med fordel bruge følgende ord til at skabe opgaver og aktiviteter til n
         </label>
       </section>
     </div>
+    <div id="pblPromptView" class="hidden">
+  <div class="card">
+    <h2>Generer dit PBL-forløb</h2>
+    <p>Hent dine data fra PBL-designeren for at bygge en struktureret prompt, som AI'en kan bruge til at udfolde hele dit projekt.</p>
+    <button type="button" data-action="fill-pbl-prompt-data" class="primary-btn" style="margin-bottom: 15px;">Hent data fra PBL Designer</button>
+    <label class="field">
+      <textarea id="aiPblPromptText" style="min-height: 400px; font-family: monospace; font-size: 14px; line-height: 1.5; background: #f8fafc;"></textarea>
+    </label>
+  </div>
+</div>
   </main>
 
   <!-- GENBRUGELIG MODAL -->
@@ -2808,22 +2819,21 @@ function switchTab(tab) {
   const isKnowledge = tab === 'knowledge';
   const isChat = tab === 'chat';
   const isPrompt = tab === 'prompt';
+  const isPblPrompt = tab === 'pbl-prompt'; // NY
 
+  // Skjul/vis containere
   if (el('designerView')) el('designerView').classList.toggle('hidden', !isDesigner);
   if (el('knowledgeView')) el('knowledgeView').classList.toggle('hidden', !isKnowledge);
   if (el('chatView')) el('chatView').classList.toggle('hidden', !isChat);
   if (el('promptView')) el('promptView').classList.toggle('hidden', !isPrompt);
+  if (el('pblPromptView')) el('pblPromptView').classList.toggle('hidden', !isPblPrompt); // NY
 
+  // Opdatér aktive knapper
   if (el('tabDesigner')) el('tabDesigner').classList.toggle('active', isDesigner);
   if (el('tabKnowledge')) el('tabKnowledge').classList.toggle('active', isKnowledge);
   if (el('tabChat')) el('tabChat').classList.toggle('active', isChat);
   if (el('tabPrompt')) el('tabPrompt').classList.toggle('active', isPrompt);
-
-  if (el('designerTopActions')) el('designerTopActions').classList.toggle('hidden', !isDesigner);
-
-  if (isKnowledge && typeof renderKnowledge === 'function') {
-    renderKnowledge();
-  }
+  if (el('tabPblPrompt')) el('tabPblPrompt').classList.toggle('active', isPblPrompt); // NY
 }
 
     // Global event delegation for alle klik i hele applikationen
@@ -2969,6 +2979,32 @@ Man kan med fordel bruge følgende ord til at skabe opgaver og aktiviteter til n
             showToast('Kunne ikke kopiere, prøv at markere teksten manuelt.', true);
           });
           break;
+          case 'fill-pbl-prompt-data':
+  const pblTitle = data.title || "[Indsæt titel]";
+  const pblSubject = data.subject || "[Indsæt fag/klasse]";
+  const pblQuestion = data.question || "[Indsæt problemstilling]";
+  const pblGoals = data.goals || "[Indsæt læringsmål]";
+  const pblProduct = data.product || "[Indsæt slutprodukt]";
+  
+  el('aiPblPromptText').value = `Du er ekspert i Problembaseret Læring (PBL). 
+Jeg er i gang med at planlægge et undervisningsforløb, og jeg har brug for din hjælp til at udfolde det.
+
+Her er de grundlæggende rammer for mit projekt:
+- Projekttitel: ${pblTitle}
+- Fag og målgruppe: ${pblSubject}
+- Den bærende problemstilling: ${pblQuestion}
+- Læringsmål: ${pblGoals}
+- Det endelige produkt: ${pblProduct}
+- Forløbets varighed: ${data.days} dage
+
+Baseret på disse informationer, vil jeg gerne have dig til at:
+1. Komme med 3 idéer til, hvordan vi kan koble projektet til virkeligheden (autenticitet).
+2. Foreslå en spændende "hook" eller opstartsaktivitet, der fanger elevernes nysgerrighed på dag 1.
+3. Lave en overordnet struktur (ugeplan/dagsplan) der sikrer progression frem mod slutproduktet.
+4. Pege på potentielle faldgruber i dette forløb, og hvordan jeg som underviser kan forebygge dem.`;
+  
+  showToast('Data fra dit PBL-forløb er indsat i prompten ✓');
+  break;
       }
     });
 
