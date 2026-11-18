@@ -976,21 +976,30 @@
         </div>
 
         <label class="field">
-          <textarea id="aiPromptText" style="min-height: 350px; font-family: monospace; font-size: 14px; line-height: 1.5; background: #f8fafc;">
-Du er ekspert i Problembaseret Læring (PBL) og praksisfaglighed i folkeskolen.
-Jeg skal bruge hjælp til et motiverende undervisningsforløb.
+          <textarea <label class="field">
+          <textarea id="aiPromptText" style="min-height: 480px; font-family: monospace; font-size: 14px; line-height: 1.5; background: #f8fafc;">
+Du er didaktisk ekspert.
 
-Mine rammer:
-- Klassetrin og fag: [Indsæt fag/klasse]
-- Tidsramme: [Indsæt tid]
-- Tema/Problemstilling: [Indsæt tema]
+Brug nedenstående til at generere et ABC-undervisningsforløb med tilhørende aktiviteter og spørgsmål.
 
-Forløbet skal indeholde:
-1. En fængende case/intro.
-2. Forslag til åbne problemformuleringer.
-3. Konkrete praksisfaglige aktiviteter (hvad skal eleverne bygge, undersøge eller skabe?).
-4. Et konkret slutprodukt og en autentisk modtager.
-5. ABC-differentiering (niveau A, B og C).</textarea>
+Tema/Titel: [Indsæt tema]
+Klassetrin og fag: [Indsæt klasse og fag]
+Problemstilling: [Indsæt problemstilling]
+
+Et ABC-differentieret forløb tager udgangspunkt i, at alle elever arbejder med det samme emne eller stofområde. De arbejder også med fælles læringsmål for undervisningen. Præcis som vi kender det fra den klassiske undervisning. Forskellen ligger i, hvordan eleverne skal arbejde med opgaverne undervejs for, at vi som lærere kan sige, at de alle når det fælles læringsmål på deres niveau. Det handler nemlig om at skabe tre mestringsniveauer niveau A, B, C.
+
+A-niveau er:
+Løse enkle opgaver, hvor grundlæggende viden og færdigheder anvendes på en let opgave; måske selvstændigt at løse (næsten) den (samme) opgave, som læreren har gennemgået.
+Man kan med fordel bruge følgende ord til at skabe opgaver og aktiviteter til niveau A: Vide, referere, genkende, forstå og forklare med egne ord.
+
+B-niveau er:
+Løse opgaver af stigende sværhedsgrad, hvor grundlæggende viden og færdigheder bruges, gerne integreret i opgaver, der stiller krav om brug af forskellig viden og færdigheder, så der skal skelnes og vælges mellem færdigheder for at løse opgaven i sin helhed.
+Man kan med fordel bruge følgende ord til at skabe opgaver og aktiviteter til niveau B: Anvende, afprøve, bruge, analysere, nedbryde i dele, skille, se system/struktur.
+
+C-niveau er:
+Refleksioner over rækkevidden af de tilegnede færdigheder, kritisk diskussion af den tilegnede viden, selvstændigt finde sammenhænge, hvor de tilegnede færdigheder kan bruges, opfinde produkter hvori viden og færdigheder kan indgå og tilsvarende.
+Man kan med fordel bruge følgende ord til at skabe opgaver og aktiviteter til niveau C: Fortolke, vurdere, bedømme ud fra forskellige kriterier, gå fra dele til helhed, opstille handleforskrifter, skabe, metakognition.</textarea>
+        </label></textarea>
         </label>
       </section>
     </div>
@@ -2922,21 +2931,31 @@ function switchTab(tab) {
           const pGoals = data.goals || "[Indsæt læringsmål]";
           const pProduct = data.product || "[Indsæt slutprodukt]";
           
-          el('aiPromptText').value = `Du er ekspert i Problembaseret Læring (PBL) og praksisfaglighed i folkeskolen.
-Jeg har startet på et forløb og har brug for din hjælp til at folde det ud, få nye idéer og sikre høj praksisfaglighed.
+          el('aiPromptText').value = `Du er didaktisk ekspert.
 
-Mine foreløbige rammer:
-- Titel: ${pTitle}
+Brug nedenstående til at generere et ABC-undervisningsforløb med tilhørende aktiviteter og spørgsmål.
+
+Mine rammer for forløbet:
+- Tema/Titel: ${pTitle}
 - Klassetrin og fag: ${pSubject}
-- Drivende spørgsmål / problemstilling: ${pQuestion}
+- Problemstilling: ${pQuestion}
 - Læringsmål: ${pGoals}
 - Slutprodukt: ${pProduct}
 - Antal dage afsat: ${data.days}
 
-Hjælp mig med at videreudvikle dette forløb. Jeg har især brug for:
-1. Konkrete forslag til praksisfaglige aktiviteter for hver dag (koble teori med handling og krop).
-2. ABC-differentiering (hvordan opgaverne kan løses på niveau A, B og C).
-3. Forslag til evaluering, der passer til slutproduktet.`;
+Et ABC-differentieret forløb tager udgangspunkt i, at alle elever arbejder med det samme emne eller stofområde. De arbejder også med fælles læringsmål for undervisningen. Præcis som vi kender det fra den klassiske undervisning. Forskellen ligger i, hvordan eleverne skal arbejde med opgaverne undervejs for, at vi som lærere kan sige, at de alle når det fælles læringsmål på deres niveau. Det handler nemlig om at skabe tre mestringsniveauer niveau A, B, C.
+
+A-niveau er:
+Løse enkle opgaver, hvor grundlæggende viden og færdigheder anvendes på en let opgave; måske selvstændigt at løse (næsten) den (samme) opgave, som læreren har gennemgået.
+Man kan med fordel bruge følgende ord til at skabe opgaver og aktiviteter til niveau A: Vide, referere, genkende, forstå og forklare med egne ord.
+
+B-niveau er:
+Løse opgaver af stigende sværhedsgrad, hvor grundlæggende viden og færdigheder bruges, gerne integreret i opgaver, der stiller krav om brug af forskellig viden og færdigheder, så der skal skelnes og vælges mellem færdigheder for at løse opgaven i sin helhed.
+Man kan med fordel bruge følgende ord til at skabe opgaver og aktiviteter til niveau B: Anvende, afprøve, bruge, analysere, nedbryde i dele, skille, se system/struktur.
+
+C-niveau er:
+Refleksioner over rækkevidden af de tilegnede færdigheder, kritisk diskussion af den tilegnede viden, selvstændigt finde sammenhænge, hvor de tilegnede færdigheder kan bruges, opfinde produkter hvori viden og færdigheder kan indgå og tilsvarende.
+Man kan med fordel bruge følgende ord til at skabe opgaver og aktiviteter til niveau C: Fortolke, vurdere, bedømme ud fra forskellige kriterier, gå fra dele til helhed, opstille handleforskrifter, skabe, metakognition.`;
           showToast('Data fra dit PBL-forløb er indsat i prompten ✓');
           break;
 
