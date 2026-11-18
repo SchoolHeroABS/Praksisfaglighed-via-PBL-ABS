@@ -840,7 +840,6 @@
       <button type="button" id="tabDesigner" class="active" data-action="switch-tab" data-tab="designer">▦ PBL Designer</button>
       <button type="button" id="tabKnowledge" data-action="switch-tab" data-tab="knowledge">🃏 Projekt Poker &amp; Vidensbank</button>
       <button type="button" id="tabChat" data-action="switch-tab" data-tab="chat">✦ AI – Praksisfaglighed</button>
-      <button type="button" id="tabChat" data-action="switch-tab" data-tab="chat">✦ AI – Praksisfaglighed</button>
       <button type="button" id="tabPrompt" data-action="switch-tab" data-tab="prompt">✍️ Prompt til AI-hjælp</button>
     </nav>
 
@@ -2795,30 +2794,28 @@ Brug udelukkende disse 4 gyldige kategorier for "category": "Opstart", "Undersø
     // =========================================================
     // 6. FANESKIFT & CENTRAL EVENT DELEGATION
     // =========================================================
-    function switchTab(tab) {
-      function switchTab(tab) {
-      const isDesigner = tab === 'designer';
-      const isKnowledge = tab === 'knowledge';
-      const isChat = tab === 'chat';
-      const isPrompt = tab === 'prompt';
+function switchTab(tab) {
+  const isDesigner = tab === 'designer';
+  const isKnowledge = tab === 'knowledge';
+  const isChat = tab === 'chat';
+  const isPrompt = tab === 'prompt';
 
-      // Tjekker om elementerne findes, før de skjules/vises
-      if (el('designerView')) el('designerView').classList.toggle('hidden', !isDesigner);
-      if (el('knowledgeView')) el('knowledgeView').classList.toggle('hidden', !isKnowledge);
-      if (el('chatView')) el('chatView').classList.toggle('hidden', !isChat);
-      if (el('promptView')) el('promptView').classList.toggle('hidden', !isPrompt);
+  if (el('designerView')) el('designerView').classList.toggle('hidden', !isDesigner);
+  if (el('knowledgeView')) el('knowledgeView').classList.toggle('hidden', !isKnowledge);
+  if (el('chatView')) el('chatView').classList.toggle('hidden', !isChat);
+  if (el('promptView')) el('promptView').classList.toggle('hidden', !isPrompt);
 
-      if (el('tabDesigner')) el('tabDesigner').classList.toggle('active', isDesigner);
-      if (el('tabKnowledge')) el('tabKnowledge').classList.toggle('active', isKnowledge);
-      if (el('tabChat')) el('tabChat').classList.toggle('active', isChat);
-      if (el('tabPrompt')) el('tabPrompt').classList.toggle('active', isPrompt);
+  if (el('tabDesigner')) el('tabDesigner').classList.toggle('active', isDesigner);
+  if (el('tabKnowledge')) el('tabKnowledge').classList.toggle('active', isKnowledge);
+  if (el('tabChat')) el('tabChat').classList.toggle('active', isChat);
+  if (el('tabPrompt')) el('tabPrompt').classList.toggle('active', isPrompt);
 
-      if (el('designerTopActions')) el('designerTopActions').classList.toggle('hidden', !isDesigner);
+  if (el('designerTopActions')) el('designerTopActions').classList.toggle('hidden', !isDesigner);
 
-      if (isKnowledge && typeof renderKnowledge === 'function') {
-        renderKnowledge();
-      }
-    }
+  if (isKnowledge && typeof renderKnowledge === 'function') {
+    renderKnowledge();
+  }
+}
 
     // Global event delegation for alle klik i hele applikationen
     document.addEventListener('click', e => {
