@@ -3064,35 +3064,36 @@ document.addEventListener('click', (e) => {
     });
   }
 });
-    // Håndtering af "Ryd forløb"-knappen
+// Håndtering af "Ryd forløb"-knappen
 document.addEventListener('click', (e) => {
   const clearBtn = e.target.closest('#btn-clear-pbl');
   if (!clearBtn) return;
 
-  // Sikkerhedsspørgsmål for at undgå fejltryk
   if (confirm('Er du sikker på, at du vil rydde hele forløbet og starte forfra?')) {
 
-    // VIGTIGT: Find det ID, som omkranser hele din Fane 1 (f.eks. id="tab1" eller id="pbl-designer")
-    // Hvis du ikke har et ID på selve fanen, kan du søge i hele dokumentet ved at slette "tab1Container." i næste linje.
-    const tab1Container = document.getElementById('tab1') || document;
+    // Kigger efter den nærmeste store container, som knappen ligger i 
+    // (Ret gerne 'article', 'section' eller '.tab-content' til det, der omkranser din fane)
+    const pblContainer = clearBtn.closest('div') || document; 
 
-    // 1. Tøm alle almindelige tekstfelter og inputs
-    tab1Container.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(input => {
+    // 1. Tømmer alle almindelige tekstfelter
+    pblContainer.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(input => {
       input.value = '';
     });
 
-    // 2. Nulstil eventuelle dropdowns (select)
-    tab1Container.querySelectorAll('select').forEach(select => {
+    // 2. Nulstiller dropdowns
+    pblContainer.querySelectorAll('select').forEach(select => {
       select.selectedIndex = 0;
     });
 
-    // 3. HVIS du bygger en visuel liste med dynamiske HTML-elementer (f.eks. tilføjer faser løbende),
-    // skal containeren til disse tømmes helt. Fjern // herunder og indsæt containerens ID:
-    // document.getElementById('pbl-fase-liste').innerHTML = '';
+    // 3. Fjerner alt indhold i f.eks. lister eller dynamiske faser 
+    // VIGTIGT: Hvis du har en bestemt boks, hvor nye faser dukker op, så skriv dens ID her:
+    const faseContainer = document.getElementById('INDSÆT_ID_PÅ_DIN_FASE_CONTAINER_HER');
+    if (faseContainer) {
+      faseContainer.innerHTML = '';
+    }
 
-    // Vis bekræftelse i bunden
     if (typeof showToast === 'function') {
-      showToast('Forløbet er ryddet og klar til en frisk start 🧹', false);
+      showToast('PBL-forløbet er ryddet 🧹', false);
     }
   }
 });
