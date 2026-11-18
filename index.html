@@ -840,6 +840,8 @@
       <button type="button" id="tabDesigner" class="active" data-action="switch-tab" data-tab="designer">▦ PBL Designer</button>
       <button type="button" id="tabKnowledge" data-action="switch-tab" data-tab="knowledge">🃏 Projekt Poker &amp; Vidensbank</button>
       <button type="button" id="tabChat" data-action="switch-tab" data-tab="chat">✦ AI – Praksisfaglighed</button>
+      <button type="button" id="tabChat" data-action="switch-tab" data-tab="chat">✦ AI – Praksisfaglighed</button>
+      <button type="button" id="tabPrompt" data-action="switch-tab" data-tab="prompt">✍️ Prompt til AI-hjælp</button>
     </nav>
 
     <!-- FANE 1: PBL DESIGNER -->
@@ -953,6 +955,45 @@
           <p class="chat-note">Når et forløb er genereret, dukker knappen <b>↳ Overfør forløb til PBL Designer</b> op lige under svaret.</p>
         </aside>
       </div>
+    </div>
+    <!-- FANE 4: PROMPT TIL AI-HJÆLP -->
+    <div id="promptView" class="hidden">
+      <section class="panel">
+        <h2 style="color: #163e70;">Prompt til AI-hjælp med Praksisfaglighed via PBL</h2>
+        <p class="hint">Brug denne fane til at skræddersy en prompt, du kan kopiere og sætte ind i din foretrukne AI (f.eks. SkoleGPT, ChatGPT eller Claude).</p>
+        
+        <div style="background: #eef3f9; border-left: 4px solid #305e9c; padding: 14px; border-radius: 8px; margin-bottom: 18px;">
+          <h3 style="margin-top: 0; font-size: 15px;">Sådan gør du:</h3>
+          <ol style="margin-bottom: 0; padding-left: 20px; font-size: 14px; line-height: 1.5;">
+            <li>Start med at udfylde "Forløbsbeskrivelse" i PBL Designer-fanen.</li>
+            <li>Klik på <b>"Hent data fra PBL Designer"</b> for at autoudfylde prompten.</li>
+            <li>Ret evt. teksten til, klik <b>"Kopiér Prompt"</b>, og sæt den ind i din AI.</li>
+          </ol>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+            <button type="button" class="primary" data-action="fill-prompt-data">1. Hent data fra PBL Designer</button>
+            <button type="button" style="background: #31946b; color: white;" data-action="copy-prompt">2. Kopiér Prompt 📋</button>
+        </div>
+
+        <label class="field">
+          <textarea id="aiPromptText" style="min-height: 350px; font-family: monospace; font-size: 14px; line-height: 1.5; background: #f8fafc;">
+Du er ekspert i Problembaseret Læring (PBL) og praksisfaglighed i folkeskolen.
+Jeg skal bruge hjælp til et motiverende undervisningsforløb.
+
+Mine rammer:
+- Klassetrin og fag: [Indsæt fag/klasse]
+- Tidsramme: [Indsæt tid]
+- Tema/Problemstilling: [Indsæt tema]
+
+Forløbet skal indeholde:
+1. En fængende case/intro.
+2. Forslag til åbne problemformuleringer.
+3. Konkrete praksisfaglige aktiviteter (hvad skal eleverne bygge, undersøge eller skabe?).
+4. Et konkret slutprodukt og en autentisk modtager.
+5. ABC-differentiering (niveau A, B og C).</textarea>
+        </label>
+      </section>
     </div>
   </main>
 
@@ -2758,20 +2799,25 @@ Brug udelukkende disse 4 gyldige kategorier for "category": "Opstart", "Undersø
       const isDesigner = tab === 'designer';
       const isKnowledge = tab === 'knowledge';
       const isChat = tab === 'chat';
+      const isPrompt = tab === 'prompt';
 
       el('designerView').classList.toggle('hidden', !isDesigner);
       el('knowledgeView').classList.toggle('hidden', !isKnowledge);
       el('chatView').classList.toggle('hidden', !isChat);
+      el('promptView').classList.toggle('hidden', !isPrompt);
 
       el('tabDesigner').classList.toggle('active', isDesigner);
       el('tabKnowledge').classList.toggle('active', isKnowledge);
       el('tabChat').classList.toggle('active', isChat);
+      el('tabPrompt').classList.toggle('active', isPrompt);
 
       // Vis top-knapper til eksport/import når man er på PBL Designer-fanen
       el('designerTopActions').classList.toggle('hidden', !isDesigner);
 
       if (isKnowledge) {
         renderKnowledge();
+      }
+    }
       }
     }
 
@@ -2872,6 +2918,41 @@ Brug udelukkende disse 4 gyldige kategorier for "category": "Opstart", "Undersø
           break;
         case 'reset-chat':
           resetChat();
+          break;
+          case 'fill-prompt-data':
+          const pTitle = data.title || "[Indsæt titel]";
+          const pSubject = data.subject || "[Indsæt fag/klasse]";
+          const pQuestion = data.question || "[Indsæt problemstilling]";
+          const pGoals = data.goals || "[Indsæt læringsmål]";
+          const pProduct = data.product || "[Indsæt slutprodukt]";
+          
+          el('aiPromptText').value = `Du er ekspert i Problembaseret Læring (PBL) og praksisfaglighed i folkeskolen.
+Jeg har startet på et forløb og har brug for din hjælp til at folde det ud, få nye idéer og sikre høj praksisfaglighed.
+
+Mine foreløbige rammer:
+- Titel: ${pTitle}
+- Klassetrin og fag: ${pSubject}
+- Drivende spørgsmål / problemstilling: ${pQuestion}
+- Læringsmål: ${pGoals}
+- Slutprodukt: ${pProduct}
+- Antal dage afsat: ${data.days}
+
+Hjælp mig med at videreudvikle dette forløb. Jeg har især brug for:
+1. Konkrete forslag til praksisfaglige aktiviteter for hver dag (koble teori med handling og krop).
+2. ABC-differentiering (hvordan opgaverne kan løses på niveau A, B og C).
+3. Forslag til evaluering, der passer til slutproduktet.`;
+          showToast('Data fra dit PBL-forløb er indsat i prompten ✓');
+          break;
+
+        case 'copy-prompt':
+          const textArea = el('aiPromptText');
+          textArea.select();
+          textArea.setSelectionRange(0, 99999);
+          navigator.clipboard.writeText(textArea.value).then(() => {
+            showToast('Prompten er kopieret til udklipsholderen ✓');
+          }).catch(() => {
+            showToast('Kunne ikke kopiere, prøv at markere teksten manuelt.', true);
+          });
           break;
       }
     });
