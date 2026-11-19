@@ -7,78 +7,197 @@
   <!-- Google Fonts til graffiti-inspireret header -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik+Spray+Paint&family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    
     :root {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: #243247;
-      background: #f5f7fb;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      --absalon-blue: #0A3B5C;
+      --absalon-light: #E8EFF4;
+      --absalon-accent: #E58D2D;
+      --text-main: #1f2937;
+      color: var(--text-main);
+      background: #f8fafc;
     }
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       overflow-x: hidden;
-      background: #f5f7fb;
-      color: #243247;
+      background: #f8fafc;
+      color: var(--text-main);
     }
 
-    /* Header med graffiti-inspireret typografi */
+
+    /* Moderne, stilren Header inspireret af Absalonskolen */
     header {
-      background: linear-gradient(135deg, #ffffff 0%, #eef4fc 60%, #e4eefb 100%);
-      padding: 22px 28px;
-      border-bottom: 3px solid #305e9c;
+      background: #ffffff;
+      padding: 20px 32px;
+      border-bottom: 3px solid var(--absalon-blue);
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
       flex-wrap: wrap;
-      position: relative;
-      overflow: hidden;
-    }
-    header::before {
-      content: "";
-      position: absolute;
-      top: -30px;
-      left: -20px;
-      width: 280px;
-      height: 130px;
-      background: radial-gradient(circle, rgba(48, 94, 156, 0.13) 0%, rgba(223, 153, 44, 0.09) 52%, transparent 75%);
-      pointer-events: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
     .brand-wrap {
-      position: relative;
-      z-index: 1;
+      display: flex;
+      flex-direction: column;
     }
     h1.graffiti-title {
       margin: 0;
-      font-family: 'Rubik Spray Paint', 'Sedgwick Ave Display', cursive, sans-serif;
-      font-size: clamp(25px, 3.5vw, 39px);
-      font-weight: 400;
-      letter-spacing: 1.5px;
-      line-height: 1.1;
-      background: linear-gradient(95deg, #1b3b6f 0%, #305e9c 55%, #d97706 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(2px 3px 0px rgba(27, 59, 111, 0.15));
-      transform: rotate(-0.6deg);
-      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--absalon-blue);
+      text-transform: uppercase;
     }
     .graffiti-subtitle {
-      margin-top: 6px;
-      font-family: 'Permanent Marker', 'Sedgwick Ave Display', cursive, sans-serif;
-      font-size: clamp(16px, 2vw, 21px);
-      color: #2f5285;
-      letter-spacing: 0.8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      margin-top: 4px;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(14px, 1.5vw, 16px);
+      color: #4b5563;
+      font-weight: 500;
     }
-    .graffiti-subtitle::before {
-      content: "✦";
-      color: #df992c;
-      font-size: 18px;
+    
+    /* Moderne Faner */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .tabs button {
+      font-weight: 600;
+      padding: 10px 18px;
+      background: transparent;
+      color: #64748b;
+      border-radius: 8px;
+    }
+    .tabs button:hover {
+      background: #f1f5f9;
+      color: #334155;
+    }
+    .tabs button.active {
+      background: var(--absalon-blue);
+      color: #ffffff;
+      box-shadow: 0 4px 6px rgba(10, 59, 92, 0.2);
+    }
+
+    /* Forside Hjul (Klimazirkus Model) */
+    #frontpageView {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .fp-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 32px;
+      color: var(--absalon-blue);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .fp-subtitle {
+      color: #4b5563;
+      margin-bottom: 50px;
+      text-align: center;
+      font-size: 16px;
+    }
+    
+    .wheel-container {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 4px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      background: #ffffff;
+      border: 6px solid #ffffff;
+    }
+    .wheel-quadrant {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      position: relative;
+    }
+    .wheel-quadrant:hover {
+      filter: brightness(0.92);
+      transform: scale(0.98);
+    }
+    .quad-tl { background: #fceea7; padding: 12% 8% 6% 12%; }
+    .quad-tr { background: #f5c4d8; padding: 12% 12% 6% 8%; }
+    .quad-bl { background: #aad5be; padding: 6% 8% 12% 12%; }
+    .quad-br { background: #c6bade; padding: 6% 12% 12% 8%; }
+    
+    .quad-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: clamp(14px, 2.2vw, 20px);
+      color: #111827;
+      margin-bottom: 10px;
+      line-height: 1.1;
+    }
+    .quad-text {
+      hyphens: auto;
+      font-size: clamp(10px, 1.2vw, 12.5px);
+      color: #1f2937;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+    .quad-link {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #000000;
+      opacity: 0.6;
+    }
+    .wheel-quadrant:hover .quad-link { opacity: 1; }
+    
+    .wheel-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32%;
+      height: 32%;
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      z-index: 10;
+      pointer-events: none;
+      text-align: center;
+    }
+    .wc-top { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: #111; letter-spacing: 1px; }
+    .wc-num { font-family: 'Montserrat', sans-serif; font-size: 55px; font-weight: 800; color: #111; line-height: 1; margin: -5px 0; }
+    .wc-bot { font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 800; color: #111; letter-spacing: 0.5px; }
+
+    @media (max-width: 650px) {
+      .wheel-quadrant { padding: 15px; }
+      .wc-num { font-size: 35px; }
+      .wc-top { font-size: 9px; }
+      .wc-bot { font-size: 7px; }
     }
 
     h2 {
@@ -99,7 +218,7 @@
       transition: filter 0.15s ease, transform 0.1s ease, background-color 0.15s ease;
     }
     button.primary {
-      background: #305e9c;
+      background: var(--absalon-blue);
       color: #ffffff;
     }
     button.danger {
@@ -381,7 +500,7 @@
       padding: 11px 16px;
     }
     .tabs button.active {
-      background: #305e9c;
+      background: var(--absalon-blue);
       color: #ffffff;
       box-shadow: 0 3px 10px rgba(48, 94, 156, 0.22);
     }
@@ -452,9 +571,9 @@
       border: 1px solid #dce5f2;
     }
     .subject-filters button.active {
-      background: #305e9c;
+      background: var(--absalon-blue);
       color: #ffffff;
-      border-color: #305e9c;
+      border-color: var(--absalon-blue);
     }
     .poker-grid {
       display: grid;
@@ -492,7 +611,7 @@
       display: inline-block;
     }
     .source-tag.model {
-      background: #305e9c;
+      background: var(--absalon-blue);
       color: #ffffff;
     }
     .poker-card h3 {
@@ -819,13 +938,27 @@
         border: 1px solid #ccc;
       }
     }
+  
+    .quad-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 88%;
+      margin: 0 auto;
+    }
+    /* Let's tilt the text to align with the circle's shape */
+    .quad-tl .quad-content { transform: rotate(-12deg); }
+    .quad-tr .quad-content { transform: rotate(12deg); }
+    .quad-bl .quad-content { transform: rotate(12deg); }
+    .quad-br .quad-content { transform: rotate(-12deg); }
+
   </style>
 </head>
 <body>
   <header>
     <div class="brand-wrap">
-      <h1 class="graffiti-title">ABSALONSKOLEN - HOLBÆK</h1>
-      <div class="graffiti-subtitle">Praksisfaglighed via PBL.</div>
+      <h1 class="graffiti-title">ABSALONSKOLEN</h1>
+      <div class="graffiti-subtitle">Praksisfaglighed via PBL</div>
     </div>
     <div id="designerTopActions" class="topbuttons">
       <button type="button" data-action="save-file">Gem forløb</button>
@@ -837,15 +970,67 @@
 
   <main>
     <nav class="tabs" aria-label="Vælg værktøj">
-      <button type="button" id="tabDesigner" class="active" data-action="switch-tab" data-tab="designer">▦ PBL Designer</button>
-      <button type="button" id="tabKnowledge" data-action="switch-tab" data-tab="knowledge">🃏 Projekt Poker &amp; Vidensbank</button>
-      <button type="button" id="tabChat" data-action="switch-tab" data-tab="chat">✦ AI – Praksisfaglighed</button>
-      <button type="button" id="tabPrompt" data-action="switch-tab" data-tab="prompt">Prompt til ABC-differentiering</button>
-      <button type="button" id="tabPblPrompt" data-action="switch-tab" data-tab="pbl-prompt">✦ Prompt til PBL-forløb</button>
+      <button type="button" id="tabFrontpage" class="active" data-action="switch-tab" data-tab="frontpage">🏠 Hjem</button>
+      <button type="button" id="tabDesigner" data-action="switch-tab" data-tab="designer">▦ PBL Designer</button>
+      <button type="button" id="tabKnowledge" data-action="switch-tab" data-tab="knowledge">🃏 Vidensbank</button>
+      <button type="button" id="tabChat" data-action="switch-tab" data-tab="chat">✦ AI Sparring</button>
+      <button type="button" id="tabPrompt" data-action="switch-tab" data-tab="prompt">ABC Prompt</button>
+      <button type="button" id="tabPblPrompt" data-action="switch-tab" data-tab="pbl-prompt">✦ PBL Prompt</button>
     </nav>
 
+    <!-- FANE 0: FORSIDE (HJUL) -->
+    <div id="frontpageView">
+      <h2 class="fp-title">Lokale værktøjer til PBL, praksisfaglighed, og Høj begavelse</h2>
+      <p class="fp-subtitle">Klik på et felt i modellen for at gå til det relevante værktøj.</p>
+      
+      <div class="wheel-container">
+        <!-- Top Left -->
+        <div class="wheel-quadrant quad-tl" data-action="switch-tab" data-tab="designer">
+          <div class="quad-content">
+            <div class="quad-title">PBL-designer</div>
+            <div class="quad-text">Design et projektbaseret praksisfagligt forløb med dit team</div>
+            <div class="quad-link">➔ PBL Designer</div>
+          </div>
+        </div>
+        
+        <!-- Top Right -->
+        <div class="wheel-quadrant quad-tr" data-action="switch-tab" data-tab="knowledge">
+          <div class="quad-content">
+            <div class="quad-title">Vidensbank</div>
+            <div class="quad-text">Gå på tur i projekt-poker banken og bliv inspireret</div>
+            <div class="quad-link">➔ Vidensbank</div>
+          </div>
+        </div>
+        
+        <!-- Bottom Left -->
+        <div class="wheel-quadrant quad-bl" data-action="switch-tab" data-tab="pbl-prompt">
+          <div class="quad-content">
+            <div class="quad-title">PBL Prompt</div>
+            <div class="quad-text">Overfør din PBL-planlægning til en AI-venlig prompt til videre hjælp med dit arbejde.</div>
+            <div class="quad-link">➔ PBL Prompts</div>
+          </div>
+        </div>
+
+        <!-- Bottom Right -->
+        <div class="wheel-quadrant quad-br" data-action="switch-tab" data-tab="prompt">
+          <div class="quad-content">
+            <div class="quad-title">Dygtige elever?</div>
+            <div class="quad-text">Få AI-hjælp til at strukturere ABC-forløb</div>
+            <div class="quad-link">➔ ABC Prompt</div>
+          </div>
+        </div>
+
+        <!-- Center Circle -->
+        <div class="wheel-center">
+          <div class="wc-top">LOKALE</div>
+          <div class="wc-num">4</div>
+          <div class="wc-bot">VÆRKTØJER</div>
+        </div>
+      </div>
+    </div>
+    
     <!-- FANE 1: PBL DESIGNER -->
-    <div id="designerView">
+    <div id="designerView" class="hidden">
       <section class="toolbar">
         <label>Antal dage <input id="dayCount" type="number" min="1" max="60" value="5"></label>
         <button type="button" data-action="set-days">Opdater tidslinje</button>
@@ -2816,25 +3001,26 @@ Brug udelukkende disse 4 gyldige kategorier for "category": "Opstart", "Undersø
     // 6. FANESKIFT & CENTRAL EVENT DELEGATION
     // =========================================================
 function switchTab(tab) {
+  const isFrontpage = tab === 'frontpage';
   const isDesigner = tab === 'designer';
   const isKnowledge = tab === 'knowledge';
   const isChat = tab === 'chat';
   const isPrompt = tab === 'prompt';
-  const isPblPrompt = tab === 'pbl-prompt'; // NY
+  const isPblPrompt = tab === 'pbl-prompt';
 
-  // Skjul/vis containere
+  if (el('frontpageView')) el('frontpageView').classList.toggle('hidden', !isFrontpage);
   if (el('designerView')) el('designerView').classList.toggle('hidden', !isDesigner);
   if (el('knowledgeView')) el('knowledgeView').classList.toggle('hidden', !isKnowledge);
   if (el('chatView')) el('chatView').classList.toggle('hidden', !isChat);
   if (el('promptView')) el('promptView').classList.toggle('hidden', !isPrompt);
-  if (el('pblPromptView')) el('pblPromptView').classList.toggle('hidden', !isPblPrompt); // NY
+  if (el('pblPromptView')) el('pblPromptView').classList.toggle('hidden', !isPblPrompt);
 
-  // Opdatér aktive knapper
+  if (el('tabFrontpage')) el('tabFrontpage').classList.toggle('active', isFrontpage);
   if (el('tabDesigner')) el('tabDesigner').classList.toggle('active', isDesigner);
   if (el('tabKnowledge')) el('tabKnowledge').classList.toggle('active', isKnowledge);
   if (el('tabChat')) el('tabChat').classList.toggle('active', isChat);
   if (el('tabPrompt')) el('tabPrompt').classList.toggle('active', isPrompt);
-  if (el('tabPblPrompt')) el('tabPblPrompt').classList.toggle('active', isPblPrompt); // NY
+  if (el('tabPblPrompt')) el('tabPblPrompt').classList.toggle('active', isPblPrompt);
 }
 
     // Global event delegation for alle klik i hele applikationen
@@ -3047,6 +3233,7 @@ Baseret på disse informationer, vil jeg gerne have dig til at:
     // Initialisering ved sideindlæsning
     renderDesigner();
     renderKnowledge();
+    switchTab('frontpage');
     
     // Håndtering af "Kopiér Prompt"-knappen
 document.addEventListener('click', (e) => {
